@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Travle CABA</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111111;
+      --panel: #191919;
+      --panel-soft: #222222;
+      --line: #343434;
+      --text: #f2f2f2;
+      --muted: #a5a5a5;
+      --accent: #75aadb;
+      --accent-2: #f0b85a;
+      --danger: #ef5350;
+      --radius: 8px;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    main {
+      position: relative;
+      width: min(1040px, 100%);
+      min-height: min(680px, calc(100vh - 48px));
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .intro {
+      position: relative;
+      min-width: 0;
+      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(28px, 5vw, 58px);
+      background:
+        linear-gradient(135deg, rgba(117, 170, 219, 0.14), transparent 34%),
+        linear-gradient(315deg, rgba(240, 184, 90, 0.12), transparent 40%),
+        #151515;
+      overflow: hidden;
+    }
+
+    .intro::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(21, 21, 21, 0.86), rgba(21, 21, 21, 0.38) 48%, rgba(21, 21, 21, 0.78)),
+        linear-gradient(0deg, rgba(21, 21, 21, 0.9), transparent 34%, rgba(21, 21, 21, 0.74));
+    }
+
+    .hero-copy,
+    .intro footer {
+      position: relative;
+      z-index: 3;
+    }
+
+    .brand {
+      font-size: clamp(44px, 9vw, 96px);
+      line-height: 0.92;
+      font-weight: 850;
+      letter-spacing: 0;
+      margin: 0;
+      text-shadow: 0 2px 0 #000000;
+    }
+
+    .brand span {
+      color: var(--accent);
+      display: block;
+    }
+
+    .copy {
+      max-width: 500px;
+      color: #d3d3d3;
+      font-size: 18px;
+      line-height: 1.5;
+      margin: 22px 0 0;
+    }
+
+    .sprite-field {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      transform: translate3d(calc(var(--mx, 0px) * 0.18), calc(var(--my, 0px) * 0.18), 0);
+      transition: transform 180ms ease-out;
+    }
+
+    .sprite {
+      position: absolute;
+      width: var(--size);
+      max-width: 34%;
+      height: auto;
+      image-rendering: auto;
+      filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.48));
+      opacity: var(--opacity, 0.92);
+      transform:
+        translate3d(calc(var(--mx, 0px) * var(--depth)), calc(var(--my, 0px) * var(--depth)), 0)
+        rotate(var(--rotate));
+      animation: sprite-float var(--duration) ease-in-out infinite;
+      animation-delay: var(--delay);
+      will-change: transform;
+    }
+
+    .sprite:nth-child(3n) {
+      animation-name: sprite-float-alt;
+    }
+
+    .sprite:nth-child(4n) {
+      animation-name: sprite-bob;
+    }
+
+    .s-obelo { --size: 128px; --depth: 0.020; --rotate: -7deg; --duration: 7s; --delay: -1s; left: 56%; top: 10%; }
+    .s-bandera { --size: 88px; --depth: -0.016; --rotate: 10deg; --duration: 8s; --delay: -3s; left: 31%; top: 8%; }
+    .s-mate { --size: 118px; --depth: 0.026; --rotate: 7deg; --duration: 8.5s; --delay: -2s; left: 70%; top: 34%; }
+    .s-empanada { --size: 112px; --depth: -0.022; --rotate: -10deg; --duration: 7.5s; --delay: -4s; left: 43%; top: 58%; }
+    .s-tango { --size: 126px; --depth: 0.015; --rotate: 8deg; --duration: 9s; --delay: -5s; left: 10%; top: 48%; }
+    .s-caminito { --size: 132px; --depth: -0.014; --rotate: -4deg; --duration: 8.8s; --delay: -2.5s; left: 74%; top: 65%; }
+    .s-choripan { --size: 118px; --depth: 0.024; --rotate: 13deg; --duration: 7.8s; --delay: -1.8s; left: 18%; top: 73%; }
+    .s-fernet { --size: 110px; --depth: -0.020; --rotate: -12deg; --duration: 8.2s; --delay: -4.4s; left: 82%; top: 13%; }
+    .s-messi { --size: 116px; --depth: 0.018; --rotate: 8deg; --duration: 8.7s; --delay: -6s; left: 6%; top: 16%; }
+    .s-vino { --size: 96px; --depth: -0.018; --rotate: 9deg; --duration: 8.1s; --delay: -5.2s; left: 59%; top: 79%; }
+    .s-salchi { --size: 94px; --depth: 0.022; --rotate: -8deg; --duration: 7.2s; --delay: -2.8s; left: 32%; top: 34%; }
+    .s-diego { --size: 112px; --depth: -0.012; --rotate: 5deg; --duration: 9.2s; --delay: -3.6s; left: 86%; top: 46%; }
+
+    .panel {
+      position: relative;
+      z-index: 4;
+      border-left: 1px solid var(--line);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+      background: var(--panel);
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin: 0 0 6px;
+    }
+
+    .option {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      color: var(--text);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .option:hover,
+    .option:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      background: #262626;
+      transform: translateY(-1px);
+    }
+
+    .option strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 16px;
+    }
+
+    .option span span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stars {
+      color: var(--accent-2);
+      white-space: nowrap;
+    }
+
+    footer {
+      color: #858585;
+      font-size: 13px;
+    }
+
+    @keyframes sprite-float {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -12px; }
+    }
+
+    @keyframes sprite-float-alt {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 10px -8px; }
+    }
+
+    @keyframes sprite-bob {
+      0%, 100% { translate: 0 0; }
+      50% { translate: -8px 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sprite,
+      .sprite-field {
+        animation: none;
+        transition: none;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 860px) {
+      body {
+        padding: 0;
+      }
+
+      main {
+        width: 100%;
+        min-height: 100vh;
+        grid-template-columns: 1fr;
+        border: 0;
+      }
+
+      .intro {
+        min-height: 48vh;
+      }
+
+      .panel {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .sprite {
+        max-width: 22%;
+      }
+
+      .s-messi,
+      .s-diego,
+      .s-vino,
+      .s-salchi {
+        display: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .intro {
+        min-height: 44vh;
+        padding: 26px 20px;
+      }
+
+      .copy {
+        font-size: 16px;
+      }
+
+      .sprite {
+        opacity: 0.72;
+        max-width: 28%;
+      }
+
+      .s-obelo { left: 60%; top: 8%; }
+      .s-bandera { left: 28%; top: 7%; }
+      .s-mate { left: 73%; top: 42%; }
+      .s-empanada { left: 38%; top: 64%; }
+      .s-tango { left: 6%; top: 48%; }
+      .s-caminito { left: 69%; top: 66%; }
+      .s-choripan { left: 12%; top: 74%; }
+      .s-fernet { left: 79%; top: 18%; }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <section class="intro" aria-labelledby="title">
+      <div class="sprite-field" aria-hidden="true">
+        <img class="sprite s-obelo" src="data/images/obelo.png" alt="" />
+        <img class="sprite s-bandera" src="data/images/bandera.png" alt="" />
+        <img class="sprite s-mate" src="data/images/mate.png" alt="" />
+        <img class="sprite s-empanada" src="data/images/empanada.png" alt="" />
+        <img class="sprite s-tango" src="data/images/tango.png" alt="" />
+        <img class="sprite s-caminito" src="data/images/caminito.png" alt="" />
+        <img class="sprite s-choripan" src="data/images/choripan.png" alt="" />
+        <img class="sprite s-fernet" src="data/images/fernet.png" alt="" />
+        <img class="sprite s-messi" src="data/images/messi.png" alt="" />
+        <img class="sprite s-vino" src="data/images/vino.png" alt="" />
+        <img class="sprite s-salchi" src="data/images/salchi.png" alt="" />
+        <img class="sprite s-diego" src="data/images/diego.png" alt="" />
+      </div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">Barrios de Buenos Aires</p>
+        <h1 id="title" class="brand">travle <span>CABA</span></h1>
+        <p class="copy">Encontr&aacute; la conexi&oacute;n entre dos barrios porte&ntilde;os usando solo barrios vecinos.</p>
+      </div>
+      <footer>Hecho en Buenos Aires</footer>
+    </section>
+
+    <section class="panel" aria-label="Elegir dificultad">
+      <p class="eyebrow">Dificultad</p>
+      <button class="option" type="button" data-level="facil">
+        <span><strong>Turista</strong><span>1-2 barrios intermedios</span></span>
+        <span class="stars">&#9733;&#9734;&#9734;</span>
+      </button>
+      <button class="option" type="button" data-level="medio">
+        <span><strong>Vecino</strong><span>3 barrios intermedios</span></span>
+        <span class="stars">&#9733;&#9733;&#9734;</span>
+      </button>
+      <button class="option" type="button" data-level="dificil">
+        <span><strong>Taxista</strong><span>4-5 barrios intermedios</span></span>
+        <span class="stars">&#9733;&#9733;&#9733;</span>
+      </button>
+    </section>
+  </main>
+
+  <script>
+    const intro = document.querySelector('.intro');
+    const spriteField = document.querySelector('.sprite-field');
+
+    if (intro && spriteField && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      intro.addEventListener('pointermove', (event) => {
+        const rect = intro.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width - 0.5) * 28;
+        const y = ((event.clientY - rect.top) / rect.height - 0.5) * 28;
+        spriteField.style.setProperty('--mx', x.toFixed(2) + 'px');
+        spriteField.style.setProperty('--my', y.toFixed(2) + 'px');
+      });
+
+      intro.addEventListener('pointerleave', () => {
+        spriteField.style.setProperty('--mx', '0px');
+        spriteField.style.setProperty('--my', '0px');
+      });
+    }
+
+    for (const button of document.querySelectorAll('.option')) {
+      button.addEventListener('click', () => {
+        const level = button.dataset.level || 'facil';
+        localStorage.setItem('travle_dificultad', level);
+        location.href = 'travle.html?d=' + encodeURIComponent(level);
+      });
+    }
+  </script>
+</body>
+
+</html>
