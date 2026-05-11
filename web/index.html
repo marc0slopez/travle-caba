@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Travle CABA</title>
+  <title>YENDLE</title>
   <style>
     :root {
       color-scheme: dark;
@@ -171,7 +171,157 @@
       text-transform: uppercase;
       margin: 0 0 6px;
     }
+    .help-button {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 12;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(25, 25, 25, 0.86);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 900;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+    }
 
+    .help-button:hover,
+    .help-button:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      background: #242424;
+    }
+
+    body.has-modal {
+      overflow: hidden;
+    }
+
+    .how-modal[hidden] {
+      display: none;
+    }
+
+    .how-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(8, 8, 8, 0.72);
+      backdrop-filter: blur(3px);
+    }
+
+    .how-card {
+      position: relative;
+      width: min(470px, 100%);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px 24px 24px;
+      background: #f4f4f4;
+      color: #151515;
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.52);
+    }
+
+    .how-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 30px;
+      height: 30px;
+      border: 2px solid #151515;
+      border-radius: 50%;
+      background: transparent;
+      color: #151515;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .how-kicker {
+      margin: 0 0 7px;
+      color: #245f8c;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .how-card h2 {
+      margin: 0 0 12px;
+      font-size: 27px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .how-card p {
+      margin: 0;
+      color: #505a66;
+      line-height: 1.5;
+    }
+
+    .how-steps {
+      display: grid;
+      gap: 11px;
+      margin: 18px 0 22px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .how-steps li {
+      border: 1px solid #d5d5d5;
+      border-radius: var(--radius);
+      padding: 12px 13px;
+      background: #ffffff;
+      color: #2b2b2b;
+      line-height: 1.42;
+    }
+
+    .how-steps strong {
+      display: block;
+      margin-bottom: 3px;
+      color: #111111;
+    }
+
+    .how-primary {
+      width: 100%;
+      min-height: 42px;
+      border: 0;
+      border-radius: var(--radius);
+      background: #151515;
+      color: #ffffff;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .map-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .map-option {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #202020;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .map-option.is-active,
+    .map-option:hover,
+    .map-option:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(117, 170, 219, 0.14);
+    }
 
     .daily-option {
       width: 100%;
@@ -347,6 +497,7 @@
 </head>
 
 <body>
+  <button id="home-help-btn" class="help-button" type="button" aria-label="Ver instrucciones" title="C&oacute;mo jugar">?</button>
   <main>
     <section class="intro" aria-labelledby="title">
       <div class="sprite-field" aria-hidden="true">
@@ -365,14 +516,19 @@
       </div>
 
       <div class="hero-copy">
-        <p class="eyebrow">Barrios de Buenos Aires</p>
-        <h1 id="title" class="brand">travle <span>CABA</span></h1>
-        <p class="copy">Encontr&aacute; la conexi&oacute;n entre dos barrios porte&ntilde;os usando solo barrios vecinos.</p>
+        <p class="eyebrow">Argentina en rutas</p>
+        <h1 id="title" class="brand">YENDLE <span>x CABA</span></h1>
+        <p class="copy">Jug&aacute; yendo de un lugar a otro: encontr&aacute; la cadena de barrios o partidos vecinos que conecta el origen con el destino.</p>
       </div>
-      <footer>Hecho en Buenos Aires</footer>
+      <footer>Hecho en Argentina</footer>
     </section>
 
-    <section class="panel" aria-label="Elegir dificultad">
+    <section class="panel" aria-label="Elegir mapa y dificultad">
+      <p class="eyebrow">Mapa</p>
+      <div class="map-options" role="group" aria-label="Elegir mapa">
+        <button class="map-option is-active" type="button" data-pack="caba-barrios">CABA Barrios</button>
+        <button class="map-option" type="button" data-pack="amba-partidos">AMBA Partidos</button>
+      </div>
       <button id="daily-route-btn" class="daily-option" type="button">
         <span><strong>Ruta diaria</strong><span>Misma ruta para todos en tu dificultad</span></span>
         <span class="pro-pill">PRO</span>
@@ -394,9 +550,52 @@
     </section>
   </main>
 
+  <div id="home-how-modal" class="how-modal" hidden>
+    <div class="how-card" role="dialog" aria-modal="true" aria-labelledby="home-how-title">
+      <button id="home-how-close" class="how-close" type="button" aria-label="Cerrar instrucciones">x</button>
+      <p class="how-kicker">C&oacute;mo jugar</p>
+      <h2 id="home-how-title">YENDLE es ir yendo</h2>
+      <p>Te damos una salida y una llegada. Tu objetivo es completar la ruta m&aacute;s corta usando solo lugares vecinos.</p>
+      <ol class="how-steps">
+        <li><strong>1. Mir&aacute; el origen y el destino</strong>La ruta empieza en el lugar rosa y termina en el celeste.</li>
+        <li><strong>2. Escrib&iacute; el pr&oacute;ximo vecino</strong>Vas yendo paso a paso por barrios o partidos que se tocan entre s&iacute;.</li>
+        <li><strong>3. Complet&aacute; la ruta m&iacute;nima</strong>Pod&eacute;s pedir pistas, ver la silueta o rendirte si quer&eacute;s revelar el camino.</li>
+      </ol>
+      <button id="home-how-start" class="how-primary" type="button">Jugar</button>
+    </div>
+  </div>
+
   <script>
     const intro = document.querySelector('.intro');
     const spriteField = document.querySelector('.sprite-field');
+
+    const homeHowModal = document.getElementById('home-how-modal');
+    const homeHelpBtn = document.getElementById('home-help-btn');
+    const homeHowClose = document.getElementById('home-how-close');
+    const homeHowStart = document.getElementById('home-how-start');
+
+    function openHomeHow() {
+      if (!homeHowModal) return;
+      homeHowModal.hidden = false;
+      document.body.classList.add('has-modal');
+    }
+
+    function closeHomeHow() {
+      if (!homeHowModal) return;
+      homeHowModal.hidden = true;
+      document.body.classList.remove('has-modal');
+    }
+
+    homeHelpBtn?.addEventListener('click', openHomeHow);
+    homeHowClose?.addEventListener('click', closeHomeHow);
+    homeHowStart?.addEventListener('click', closeHomeHow);
+    homeHowModal?.addEventListener('click', (event) => {
+      if (event.target === homeHowModal) closeHomeHow();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeHomeHow();
+    });
+    window.setTimeout(openHomeHow, 80);
 
     const spriteSlots = {
       desktop: [
@@ -447,8 +646,8 @@
 
     randomizeSprites();
     window.addEventListener('resize', () => {
-      window.clearTimeout(window.__travleSpriteResize);
-      window.__travleSpriteResize = window.setTimeout(randomizeSprites, 160);
+      window.clearTimeout(window.__yendleSpriteResize);
+      window.__yendleSpriteResize = window.setTimeout(randomizeSprites, 160);
     });
 
     if (intro && spriteField && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -466,18 +665,38 @@
       });
     }
 
+    let selectedPack = localStorage.getItem('yendle_pack') || localStorage.getItem('travle_pack') || 'caba-barrios';
+    if (!['caba-barrios', 'amba-partidos'].includes(selectedPack)) selectedPack = 'caba-barrios';
+
+    function syncPackButtons() {
+      for (const button of document.querySelectorAll('.map-option')) {
+        button.classList.toggle('is-active', button.dataset.pack === selectedPack);
+      }
+    }
+
+    for (const button of document.querySelectorAll('.map-option')) {
+      button.addEventListener('click', () => {
+        selectedPack = button.dataset.pack || 'caba-barrios';
+        localStorage.setItem('yendle_pack', selectedPack);
+        syncPackButtons();
+      });
+    }
+    syncPackButtons();
+
     const dailyButton = document.getElementById('daily-route-btn');
     dailyButton?.addEventListener('click', () => {
-      const level = localStorage.getItem('travle_dificultad') || 'medio';
-      localStorage.setItem('travle_dificultad', level);
-      location.href = 'travle.html?d=' + encodeURIComponent(level) + '&daily=1';
+      const level = localStorage.getItem('yendle_dificultad') || localStorage.getItem('travle_dificultad') || (selectedPack === 'amba-partidos' ? 'medio' : 'facil');
+      localStorage.setItem('yendle_dificultad', level);
+      localStorage.setItem('yendle_pack', selectedPack);
+      location.href = 'yendle.html?p=' + encodeURIComponent(selectedPack) + '&d=' + encodeURIComponent(level) + '&daily=1';
     });
 
     for (const button of document.querySelectorAll('.option')) {
       button.addEventListener('click', () => {
         const level = button.dataset.level || 'facil';
-        localStorage.setItem('travle_dificultad', level);
-        location.href = 'travle.html?d=' + encodeURIComponent(level);
+        localStorage.setItem('yendle_dificultad', level);
+        localStorage.setItem('yendle_pack', selectedPack);
+        location.href = 'yendle.html?p=' + encodeURIComponent(selectedPack) + '&d=' + encodeURIComponent(level);
       });
     }
   </script>
