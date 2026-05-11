@@ -123,6 +123,7 @@
       filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.48));
       opacity: var(--opacity, 0.92);
       transform:
+        translate(-50%, -50%)
         translate3d(calc(var(--mx, 0px) * var(--depth)), calc(var(--my, 0px) * var(--depth)), 0)
         rotate(var(--rotate));
       animation: sprite-float var(--duration) ease-in-out infinite;
@@ -345,6 +346,59 @@
   <script>
     const intro = document.querySelector('.intro');
     const spriteField = document.querySelector('.sprite-field');
+
+    const spriteSlots = {
+      desktop: [
+        { x: 14, y: 18 }, { x: 31, y: 13 }, { x: 52, y: 19 }, { x: 72, y: 18 },
+        { x: 86, y: 32 }, { x: 80, y: 54 }, { x: 69, y: 77 }, { x: 49, y: 79 },
+        { x: 30, y: 77 }, { x: 13, y: 62 }, { x: 36, y: 43 }, { x: 58, y: 49 }
+      ],
+      compact: [
+        { x: 24, y: 15 }, { x: 59, y: 15 }, { x: 84, y: 28 }, { x: 76, y: 48 },
+        { x: 69, y: 74 }, { x: 43, y: 72 }, { x: 18, y: 61 }, { x: 26, y: 40 }
+      ]
+    };
+
+    function shuffle(list) {
+      const copy = list.slice();
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function randomizeSprites() {
+      const sprites = Array.from(document.querySelectorAll('.sprite'))
+        .filter((sprite) => getComputedStyle(sprite).display !== 'none');
+      const compact = window.matchMedia('(max-width: 860px)').matches;
+      const slots = shuffle(compact ? spriteSlots.compact : spriteSlots.desktop);
+
+      sprites.forEach((sprite, index) => {
+        const slot = slots[index % slots.length];
+        const jitter = compact ? 4 : 5;
+        const left = clamp(slot.x + (Math.random() - 0.5) * jitter, 8, 92);
+        const top = clamp(slot.y + (Math.random() - 0.5) * jitter, 8, 88);
+        const rotation = Math.round((Math.random() - 0.5) * 26);
+        const duration = (7 + Math.random() * 2.6).toFixed(2);
+
+        sprite.style.left = left.toFixed(2) + '%';
+        sprite.style.top = top.toFixed(2) + '%';
+        sprite.style.setProperty('--rotate', rotation + 'deg');
+        sprite.style.setProperty('--duration', duration + 's');
+        sprite.style.setProperty('--delay', (-Math.random() * 6).toFixed(2) + 's');
+      });
+    }
+
+    randomizeSprites();
+    window.addEventListener('resize', () => {
+      window.clearTimeout(window.__travleSpriteResize);
+      window.__travleSpriteResize = window.setTimeout(randomizeSprites, 160);
+    });
 
     if (intro && spriteField && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       intro.addEventListener('pointermove', (event) => {
