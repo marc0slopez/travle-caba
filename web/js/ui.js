@@ -4,15 +4,21 @@ const selectors = {
   status: '#status',
   guessForm: '#guess-form',
   guessInput: '#guess-input',
+  guessBtn: '#guess-btn',
   hintBtn: '#hint-btn',
   newRouteBtn: '#new-route-btn',
   resetBtn: '#reset-btn',
   giveUpBtn: '#giveup-btn',
-  silhouetteBtn: '#silhouette-btn'
+  silhouetteBtn: '#silhouette-btn',
+  endgamePanel: '#endgame-panel',
+  endgameTitle: '#endgame-title',
+  endgameMessage: '#endgame-message',
+  endgameNewRouteBtn: '#endgame-new-route-btn'
 };
 
 let initialized = false;
 let autocompleteItems = [];
+let documentClickBound = false;
 let handlers = {
   onGuess: null,
   onHint: null,
@@ -23,22 +29,41 @@ let handlers = {
   onHistoryClick: null
 };
 
+function get(selector) {
+  return document.querySelector(selector);
+}
+
+function setRoundControlsDisabled(disabled) {
+  [
+    selectors.guessInput,
+    selectors.guessBtn,
+    selectors.hintBtn,
+    selectors.silhouetteBtn,
+    selectors.resetBtn,
+    selectors.giveUpBtn
+  ].forEach((selector) => {
+    const element = get(selector);
+    if (element) element.disabled = disabled;
+  });
+}
+
 export function setupUI() {
   if (initialized) return;
   initialized = true;
 
-  const form = document.querySelector(selectors.guessForm);
+  const form = get(selectors.guessForm);
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
-    const input = document.querySelector(selectors.guessInput);
+    const input = get(selectors.guessInput);
     handlers.onGuess?.(input?.value.trim() || '');
   });
 
-  document.querySelector(selectors.hintBtn)?.addEventListener('click', () => handlers.onHint?.());
-  document.querySelector(selectors.silhouetteBtn)?.addEventListener('click', () => handlers.onSilhouette?.());
-  document.querySelector(selectors.newRouteBtn)?.addEventListener('click', () => handlers.onNewRoute?.());
-  document.querySelector(selectors.resetBtn)?.addEventListener('click', () => handlers.onReset?.());
-  document.querySelector(selectors.giveUpBtn)?.addEventListener('click', () => {
+  get(selectors.hintBtn)?.addEventListener('click', () => handlers.onHint?.());
+  get(selectors.silhouetteBtn)?.addEventListener('click', () => handlers.onSilhouette?.());
+  get(selectors.newRouteBtn)?.addEventListener('click', () => handlers.onNewRoute?.());
+  get(selectors.endgameNewRouteBtn)?.addEventListener('click', () => handlers.onNewRoute?.());
+  get(selectors.resetBtn)?.addEventListener('click', () => handlers.onReset?.());
+  get(selectors.giveUpBtn)?.addEventListener('click', () => {
     if (confirm('¿Seguro que querés rendirte? Se revela la ruta completa.')) {
       handlers.onGiveUp?.();
     }
@@ -58,17 +83,17 @@ export function updateAciertos({ aciertos = 0, total = 0 }) {
 }
 
 export function setPartidaInfo(text) {
-  const el = document.querySelector(selectors.partida);
+  const el = get(selectors.partida);
   if (el) el.textContent = text;
 }
 
 export function setLlegada(text) {
-  const el = document.querySelector(selectors.llegada);
+  const el = get(selectors.llegada);
   if (el) el.textContent = text;
 }
 
 export function showStatus(text, tone = 'neutral') {
-  const el = document.querySelector(selectors.status);
+  const el = get(selectors.status);
   if (!el) return;
   el.replaceChildren();
   el.textContent = text;
@@ -80,7 +105,7 @@ export function showHint(text) {
 }
 
 export function showHintList(hints) {
-  const el = document.querySelector(selectors.status);
+  const el = get(selectors.status);
   if (!el) return;
 
   el.replaceChildren();
@@ -102,24 +127,48 @@ export function showHintList(hints) {
 }
 
 export function clearInput() {
-  const input = document.querySelector(selectors.guessInput);
+  const input = get(selectors.guessInput);
   if (!input) return;
   input.value = '';
-  input.focus();
+  if (!input.disabled) input.focus();
 }
 
 export function triggerInputFeedback(type) {
-  const input = document.querySelector(selectors.guessInput);
-  if (!input) return;
+  const input = get(selectors.guessInput);
+  if (!input || input.disabled) return;
 
   input.classList.remove('input-error', 'input-success');
   input.classList.add(type === 'success' ? 'input-success' : 'input-error');
   window.setTimeout(() => input.classList.remove('input-error', 'input-success'), type === 'success' ? 900 : 350);
 }
 
+export function showEndGame({ title, message, tone = 'success' }) {
+  const panel = get(selectors.endgamePanel);
+  const titleEl = get(selectors.endgameTitle);
+  const messageEl = get(selectors.endgameMessage);
+
+  document.body.classList.add('game-finished');
+  document.body.classList.toggle('game-won', tone === 'success');
+  document.body.classList.toggle('game-ended-error', tone !== 'success');
+  setRoundControlsDisabled(true);
+
+  if (panel) {
+    panel.hidden = false;
+    panel.dataset.tone = tone;
+  }
+  if (titleEl) titleEl.textContent = title;
+  if (messageEl) messageEl.textContent = message;
+}
+
+export function clearEndGame() {
+  const panel = get(selectors.endgamePanel);
+  document.body.classList.remove('game-finished', 'game-won', 'game-ended-error', 'won-game', 'gave-up');
+  setRoundControlsDisabled(false);
+  if (panel) panel.hidden = true;
+}
+
 export function startWinAnimation() {
   document.body.classList.add('won-game');
-  window.setTimeout(() => document.body.classList.remove('won-game'), 1400);
   if (window.confetti) {
     window.confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
   }
@@ -135,13 +184,13 @@ export function clearDefeatAnimation() {
 
 export function setupAutocomplete(items, onSelectCallback) {
   autocompleteItems = items;
-  const input = document.querySelector(selectors.guessInput);
+  const input = get(selectors.guessInput);
   if (!input) return;
 
   input.oninput = () => {
     closeAutocomplete();
     const value = input.value.trim().toLowerCase();
-    if (!value) return;
+    if (!value || input.disabled) return;
 
     const rect = input.getBoundingClientRect();
     const menu = document.createElement('div');
@@ -174,9 +223,12 @@ export function setupAutocomplete(items, onSelectCallback) {
     if (event.key === 'Escape') closeAutocomplete();
   };
 
-  document.addEventListener('click', (event) => {
-    if (event.target !== input) closeAutocomplete();
-  });
+  if (!documentClickBound) {
+    document.addEventListener('click', (event) => {
+      if (event.target !== input) closeAutocomplete();
+    });
+    documentClickBound = true;
+  }
 }
 
 function closeAutocomplete() {
@@ -211,6 +263,7 @@ export function addGuessResult(guess, status, id = guess) {
 }
 
 export function resetGameUI() {
+  clearEndGame();
   clearGuesses();
   clearInput();
   clearDefeatAnimation();

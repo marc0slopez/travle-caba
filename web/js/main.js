@@ -115,6 +115,11 @@ async function init() {
           UI.showStatus('Ruta completada. Felicitaciones.', 'success');
           revealRoute();
           UI.startWinAnimation();
+          UI.showEndGame({
+            title: 'Ruta completada',
+            message: 'Elegí una nueva ruta o cambiá la dificultad para seguir jugando.',
+            tone: 'success'
+          });
         }
         return;
       }
@@ -171,6 +176,11 @@ async function init() {
         revealRoute();
         UI.startDefeatAnimation();
         UI.showStatus('Esta era la ruta correcta.', 'error');
+        UI.showEndGame({
+          title: 'Ruta revelada',
+          message: 'Elegí una nueva ruta o cambiá la dificultad para seguir jugando.',
+          tone: 'error'
+        });
       },
       onNewRoute: resetGame,
       onHistoryClick: (id, status) => {
