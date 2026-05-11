@@ -161,7 +161,7 @@ export function routesForDifficulty(graph, difficulty = DEFAULT_DIFFICULTY) {
   return routes;
 }
 
-export function createGame(relaciones, difficulty = DEFAULT_DIFFICULTY, random = Math.random) {
+export function createGame(relaciones, difficulty = DEFAULT_DIFFICULTY, random = Math.random, options = {}) {
   const graph = buildGraph(relaciones);
   const routes = routesForDifficulty(graph, difficulty);
   if (!routes.length) {
@@ -180,7 +180,9 @@ export function createGame(relaciones, difficulty = DEFAULT_DIFFICULTY, random =
     usedHints: {},
     revealedHints: [],
     usedHintCount: 0,
-    status: 'playing'
+    status: 'playing',
+    unitSingular: options.unitSingular || 'barrio',
+    mapLabel: options.mapLabel || 'este mapa'
   };
 }
 
@@ -203,7 +205,7 @@ export function progress(state) {
 
 export function validateGuess(state, rawGuess) {
   if (!rawGuess || !String(rawGuess).trim()) {
-    return { type: 'empty', message: 'Escribí un barrio.' };
+    return { type: 'empty', message: 'Escribí un ' + (state.unitSingular || 'barrio') + '.' };
   }
 
   if (state.status !== 'playing') {
@@ -212,7 +214,7 @@ export function validateGuess(state, rawGuess) {
 
   const id = canonicalId(rawGuess);
   if (!state.graph.has(id)) {
-    return { type: 'invalid', id, message: 'Ese barrio no está en el mapa de CABA.' };
+    return { type: 'invalid', id, message: 'Ese ' + (state.unitSingular || 'barrio') + ' no está en ' + (state.mapLabel || 'este mapa') + '.' };
   }
 
   if (id === state.start || id === state.end) {
@@ -301,7 +303,7 @@ export function getHint(state, hints) {
     return { ok: true, target, text: fallback.text };
   }
 
-  return { ok: false, target, message: 'No quedan más pistas para ese barrio.' };
+  return { ok: false, target, message: 'No quedan más pistas para ese ' + (state.unitSingular || 'barrio') + '.' };
 }
 
 export function markSilhouetteHint(state, target) {

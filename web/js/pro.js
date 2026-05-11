@@ -1,6 +1,9 @@
-const STATS_KEY = 'travle_caba_stats_v1';
-const TUTORIAL_KEY = 'travle_caba_tutorial_seen_v1';
-const SOUND_KEY = 'travle_caba_sound_enabled_v1';
+const STATS_KEY = 'yendle_stats_v1';
+const OLD_STATS_KEY = 'travle_caba_stats_v1';
+const TUTORIAL_KEY = 'yendle_tutorial_seen_v1';
+const OLD_TUTORIAL_KEY = 'travle_caba_tutorial_seen_v1';
+const SOUND_KEY = 'yendle_sound_enabled_v1';
+const OLD_SOUND_KEY = 'travle_caba_sound_enabled_v1';
 const MAX_RANKING = 5;
 
 function defaultStats() {
@@ -61,7 +64,7 @@ export function seededRandom(seedInput) {
 
 export function readStats() {
   try {
-    const parsed = JSON.parse(localStorage.getItem(STATS_KEY) || 'null');
+    const parsed = JSON.parse(localStorage.getItem(STATS_KEY) || localStorage.getItem(OLD_STATS_KEY) || 'null');
     return { ...defaultStats(), ...(parsed || {}) };
   } catch {
     return defaultStats();
@@ -94,6 +97,7 @@ export function recordResult(result) {
       attempts: result.attempts || 0,
       hints: result.hintsUsed || 0,
       route: result.routeLabel,
+      pack: result.packLabel || '',
       daily: Boolean(result.isDaily)
     });
     stats.ranking.sort((a, b) => {
@@ -142,14 +146,14 @@ export function statsSummary(stats = readStats()) {
 export function buildShareText(result, stats = readStats()) {
   const summary = statsSummary(stats);
   const lines = [
-    result.isDaily ? 'Travle CABA diario ' + result.dateKey : 'Travle CABA',
+    result.isDaily ? (result.gameLabel || 'YENDLE') + ' diario ' + result.dateKey : (result.gameLabel || 'YENDLE'),
     result.routeLabel,
     result.status === 'won'
       ? 'Completado en ' + result.attempts + ' intento' + (result.attempts === 1 ? '' : 's')
       : 'Ruta revelada',
     'Pistas usadas: ' + result.hintsUsed,
     'Racha: ' + summary.streak + ' | Ganadas: ' + summary.wins + '/' + summary.played,
-    location.origin + location.pathname.replace(/\/web\/travle\.html$/, '/')
+    location.origin + location.pathname.replace(/\/web\/(?:travle|yendle)\.html$/, '/')
   ];
   return lines.join('\n');
 }
@@ -164,7 +168,7 @@ export async function shareText(text) {
 }
 
 export function shouldShowTutorial() {
-  return localStorage.getItem(TUTORIAL_KEY) !== '1';
+  return localStorage.getItem(TUTORIAL_KEY) !== '1' && localStorage.getItem(OLD_TUTORIAL_KEY) !== '1';
 }
 
 export function markTutorialSeen() {
@@ -172,7 +176,7 @@ export function markTutorialSeen() {
 }
 
 export function readSoundEnabled() {
-  return localStorage.getItem(SOUND_KEY) === '1';
+  return localStorage.getItem(SOUND_KEY) === '1' || localStorage.getItem(OLD_SOUND_KEY) === '1';
 }
 
 export function setSoundEnabled(enabled) {

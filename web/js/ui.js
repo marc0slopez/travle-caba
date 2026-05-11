@@ -6,11 +6,11 @@ const selectors = {
   guessInput: '#guess-input',
   guessBtn: '#guess-btn',
   hintBtn: '#hint-btn',
-  newRouteBtn: '#new-route-btn',
   resetBtn: '#reset-btn',
   giveUpBtn: '#giveup-btn',
   silhouetteBtn: '#silhouette-btn',
   modeBadge: '#mode-badge',
+  brandRegion: '#brand-region',
   shareResultBtn: '#share-result-btn',
   retryRouteBtn: '#retry-route-btn',
   soundToggleBtn: '#sound-toggle-btn',
@@ -19,12 +19,16 @@ const selectors = {
   endgameMessage: '#endgame-message',
   endgameNewRouteBtn: '#endgame-new-route-btn',
   tutorialModal: '#tutorial-modal',
-  tutorialCloseBtn: '#tutorial-close-btn'
+  tutorialOpenBtn: '#instructions-btn',
+  tutorialCloseBtn: '#tutorial-close-btn',
+  tutorialCloseXBtn: '#tutorial-close-x-btn'
 };
 
 let initialized = false;
 let autocompleteItems = [];
 let documentClickBound = false;
+let unitLabels = { singular: 'barrio', plural: 'barrios' };
+
 let handlers = {
   onGuess: null,
   onHint: null,
@@ -70,14 +74,23 @@ export function setupUI() {
 
   get(selectors.hintBtn)?.addEventListener('click', () => handlers.onHint?.());
   get(selectors.silhouetteBtn)?.addEventListener('click', () => handlers.onSilhouette?.());
-  get(selectors.newRouteBtn)?.addEventListener('click', () => handlers.onNewRoute?.());
   get(selectors.endgameNewRouteBtn)?.addEventListener('click', () => handlers.onNewRoute?.());
   get(selectors.shareResultBtn)?.addEventListener('click', () => handlers.onShare?.());
   get(selectors.retryRouteBtn)?.addEventListener('click', () => handlers.onRetryRoute?.());
   get(selectors.soundToggleBtn)?.addEventListener('click', () => handlers.onSoundToggle?.());
-  get(selectors.tutorialCloseBtn)?.addEventListener('click', () => {
+  const closeTutorial = () => {
     hideTutorial();
     handlers.onTutorialClose?.();
+  };
+  get(selectors.tutorialOpenBtn)?.addEventListener('click', showTutorial);
+  get(selectors.tutorialCloseBtn)?.addEventListener('click', closeTutorial);
+  get(selectors.tutorialCloseXBtn)?.addEventListener('click', closeTutorial);
+  get(selectors.tutorialModal)?.addEventListener('click', (event) => {
+    if (event.target === get(selectors.tutorialModal)) closeTutorial();
+  });
+  document.addEventListener('keydown', (event) => {
+    const modal = get(selectors.tutorialModal);
+    if (event.key === 'Escape' && modal && !modal.hidden) closeTutorial();
   });
   get(selectors.resetBtn)?.addEventListener('click', () => handlers.onReset?.());
   get(selectors.giveUpBtn)?.addEventListener('click', () => {
@@ -91,11 +104,24 @@ export function registerHandlers(nextHandlers) {
   handlers = { ...handlers, ...nextHandlers };
 }
 
+export function setPackLabels(pack) {
+  unitLabels = {
+    singular: pack?.unitSingular || 'barrio',
+    plural: pack?.unitPlural || 'barrios'
+  };
+
+  const brand = get(selectors.brandRegion);
+  if (brand) brand.textContent = 'x ' + (pack?.shortLabel || 'CABA');
+
+  const input = get(selectors.guessInput);
+  if (input) input.placeholder = (unitLabels.singular.charAt(0).toUpperCase() + unitLabels.singular.slice(1)) + '...';
+}
+
 export function updateAciertos({ aciertos = 0, total = 0 }) {
   const el = document.getElementById('progress-counter');
   if (!el) return;
 
-  el.textContent = aciertos + ' / ' + total + ' barrio' + (total !== 1 ? 's' : '');
+  el.textContent = aciertos + ' / ' + total + ' ' + (total === 1 ? unitLabels.singular : unitLabels.plural);
   el.classList.toggle('is-complete', total > 0 && aciertos === total);
 }
 
@@ -122,7 +148,7 @@ export function setDailyModeActions(isDaily) {
     ? 'Salir de la ruta diaria y jugar una ruta aleatoria'
     : 'Sortear una nueva ruta de esta dificultad';
 
-  [selectors.newRouteBtn, selectors.endgameNewRouteBtn].forEach((selector) => {
+  [selectors.endgameNewRouteBtn].forEach((selector) => {
     const button = get(selector);
     if (!button) return;
     button.textContent = label;

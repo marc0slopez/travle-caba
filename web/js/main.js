@@ -13,7 +13,7 @@ import {
   progress,
   validateGuess
 } from './game.js';
-import { DEFAULT_DIFFICULTY, DIFICULTADES, HINTS_LIMIT } from './constants.js';
+import { DEFAULT_DIFFICULTY, DEFAULT_PACK, DIFICULTADES, HINTS_LIMIT, PACKS, resolvePackId } from './constants.js';
 import {
   buildShareText,
   getBuenosAiresDateKey,
@@ -25,7 +25,6 @@ import {
   seededRandom,
   setSoundEnabled,
   shareText,
-  shouldShowTutorial,
   statsSummary
 } from './pro.js';
 
@@ -34,10 +33,14 @@ const statusEl = document.getElementById('status');
 
 function readGameOptions() {
   const params = new URLSearchParams(location.search);
-  const rawDifficulty = (params.get('d') || localStorage.getItem('travle_dificultad') || DEFAULT_DIFFICULTY).toLowerCase();
-  const difficulty = ['facil', 'medio', 'dificil'].includes(rawDifficulty) ? rawDifficulty : DEFAULT_DIFFICULTY;
+  const packId = resolvePackId(params.get('p') || localStorage.getItem('yendle_pack') || localStorage.getItem('travle_pack') || DEFAULT_PACK);
+  const pack = PACKS[packId] || PACKS[DEFAULT_PACK];
+  const rawDifficulty = (params.get('d') || localStorage.getItem('yendle_dificultad') || localStorage.getItem('travle_dificultad') || pack.defaultDifficulty || DEFAULT_DIFFICULTY).toLowerCase();
+  const difficulty = ['facil', 'medio', 'dificil'].includes(rawDifficulty) ? rawDifficulty : (pack.defaultDifficulty || DEFAULT_DIFFICULTY);
   const isDaily = params.get('daily') === '1';
+  localStorage.setItem('yendle_pack', packId);
   return {
+    packId,
     difficulty,
     isDaily,
     dateKey: getBuenosAiresDateKey()
@@ -62,7 +65,7 @@ async function init() {
     setStatus('Cargando datos...');
 
     const options = readGameOptions();
-    const data = await loadAllData();
+    const data = await loadAllData(options.packId);
     const hints = normalizeHints(data.pistas);
     const names = buildDisplayNames(data.barrios);
     let state;
@@ -71,6 +74,8 @@ async function init() {
     let lastShareText = '';
     let lastResult = null;
 
+    const pack = data.pack;
+    document.title = (pack.gameTitle || 'YENDLE') + ' | Juego';
     const difficultyLabel = DIFICULTADES[options.difficulty]?.label || 'Turista';
     const label = (id) => names[canonicalId(id)] || displayName(id);
     const autocompleteItems = () => Array.from(state.graph.keys())
@@ -80,11 +85,14 @@ async function init() {
 
     function randomForCurrentMode() {
       if (!options.isDaily) return Math.random;
-      return seededRandom('travle-caba:' + options.dateKey + ':' + options.difficulty);
+      return seededRandom('yendle:' + options.packId + ':' + options.dateKey + ':' + options.difficulty);
     }
 
     function createRound() {
-      state = createGame(data.relaciones, options.difficulty, randomForCurrentMode());
+      state = createGame(data.relaciones, options.difficulty, randomForCurrentMode(), {
+        unitSingular: pack.unitSingular,
+        mapLabel: pack.label
+      });
       roundAttempts = 0;
       roundStartedAt = Date.now();
       lastShareText = '';
@@ -113,7 +121,7 @@ async function init() {
 
     function startRandomRoute() {
       options.isDaily = false;
-      history.replaceState(null, '', 'travle.html?d=' + encodeURIComponent(options.difficulty));
+      history.replaceState(null, '', 'yendle.html?p=' + encodeURIComponent(options.packId) + '&d=' + encodeURIComponent(options.difficulty));
       UI.showToast('Saliste de la ruta diaria. Ahora jugás una ruta aleatoria.');
       resetGame();
     }
@@ -165,11 +173,14 @@ async function init() {
     function buildResult(status) {
       return {
         completionId: options.isDaily
-          ? 'daily:' + options.dateKey + ':' + options.difficulty
+          ? 'daily:' + options.packId + ':' + options.dateKey + ':' + options.difficulty
           : 'round:' + roundStartedAt,
         status,
         isDaily: options.isDaily,
         dateKey: options.dateKey,
+        packId: options.packId,
+        packLabel: pack.label,
+        gameLabel: pack.gameTitle,
         difficulty: options.difficulty,
         difficultyLabel,
         attempts: roundAttempts,
@@ -335,6 +346,7 @@ async function init() {
       }
     });
 
+    UI.setPackLabels(pack);
     createRound();
     Graphs.renderMap(mapContainer, null, data.barrios, drawInitialRoute);
     syncHeader();
@@ -342,7 +354,6 @@ async function init() {
     UI.updateSoundToggle(readSoundEnabled());
     UI.setupAutocomplete(autocompleteItems(), handleGuess);
     UI.clearInput();
-    if (shouldShowTutorial()) UI.showTutorial();
     setStatus('');
   } catch (error) {
     console.error(error);

@@ -176,7 +176,7 @@ export function renderMap(containerElement, _svgTextIgnored, barriosGeoJSON, onR
     id: 'caba-map',
     viewBox: '0 0 ' + width + ' ' + height,
     role: 'img',
-    'aria-label': 'Mapa de barrios de CABA',
+    'aria-label': barriosGeoJSON.metadata?.ariaLabel || 'Mapa de YENDLE',
     preserveAspectRatio: 'xMidYMid meet'
   });
 
