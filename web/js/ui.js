@@ -10,10 +10,16 @@ const selectors = {
   resetBtn: '#reset-btn',
   giveUpBtn: '#giveup-btn',
   silhouetteBtn: '#silhouette-btn',
+  modeBadge: '#mode-badge',
+  shareResultBtn: '#share-result-btn',
+  retryRouteBtn: '#retry-route-btn',
+  soundToggleBtn: '#sound-toggle-btn',
   endgamePanel: '#endgame-panel',
   endgameTitle: '#endgame-title',
   endgameMessage: '#endgame-message',
-  endgameNewRouteBtn: '#endgame-new-route-btn'
+  endgameNewRouteBtn: '#endgame-new-route-btn',
+  tutorialModal: '#tutorial-modal',
+  tutorialCloseBtn: '#tutorial-close-btn'
 };
 
 let initialized = false;
@@ -26,7 +32,11 @@ let handlers = {
   onNewRoute: null,
   onReset: null,
   onGiveUp: null,
-  onHistoryClick: null
+  onHistoryClick: null,
+  onShare: null,
+  onRetryRoute: null,
+  onTutorialClose: null,
+  onSoundToggle: null
 };
 
 function get(selector) {
@@ -62,6 +72,13 @@ export function setupUI() {
   get(selectors.silhouetteBtn)?.addEventListener('click', () => handlers.onSilhouette?.());
   get(selectors.newRouteBtn)?.addEventListener('click', () => handlers.onNewRoute?.());
   get(selectors.endgameNewRouteBtn)?.addEventListener('click', () => handlers.onNewRoute?.());
+  get(selectors.shareResultBtn)?.addEventListener('click', () => handlers.onShare?.());
+  get(selectors.retryRouteBtn)?.addEventListener('click', () => handlers.onRetryRoute?.());
+  get(selectors.soundToggleBtn)?.addEventListener('click', () => handlers.onSoundToggle?.());
+  get(selectors.tutorialCloseBtn)?.addEventListener('click', () => {
+    hideTutorial();
+    handlers.onTutorialClose?.();
+  });
   get(selectors.resetBtn)?.addEventListener('click', () => handlers.onReset?.());
   get(selectors.giveUpBtn)?.addEventListener('click', () => {
     if (confirm('¿Seguro que querés rendirte? Se revela la ruta completa.')) {
@@ -92,6 +109,28 @@ export function setLlegada(text) {
   if (el) el.textContent = text;
 }
 
+export function setModeBadge(text, tone = 'random') {
+  const el = get(selectors.modeBadge);
+  if (!el) return;
+  el.textContent = text;
+  el.dataset.tone = tone;
+}
+
+export function setDailyModeActions(isDaily) {
+  const label = isDaily ? 'Ruta libre' : 'Nueva Ruta';
+  const title = isDaily
+    ? 'Salir de la ruta diaria y jugar una ruta aleatoria'
+    : 'Sortear una nueva ruta de esta dificultad';
+
+  [selectors.newRouteBtn, selectors.endgameNewRouteBtn].forEach((selector) => {
+    const button = get(selector);
+    if (!button) return;
+    button.textContent = label;
+    button.title = title;
+    button.dataset.modeAction = isDaily ? 'free' : 'new';
+  });
+}
+
 export function showStatus(text, tone = 'neutral') {
   const el = get(selectors.status);
   if (!el) return;
@@ -100,8 +139,11 @@ export function showStatus(text, tone = 'neutral') {
   el.dataset.tone = tone;
 }
 
-export function showHint(text) {
-  showStatus(text || 'Pista no disponible.', 'hint');
+export function showHint(text, used = null, limit = null) {
+  const suffix = Number.isFinite(used) && Number.isFinite(limit)
+    ? ' (' + used + '/' + limit + ')'
+    : '';
+  showStatus((text || 'Pista no disponible.') + suffix, 'hint');
 }
 
 export function showHintList(hints) {
@@ -142,10 +184,11 @@ export function triggerInputFeedback(type) {
   window.setTimeout(() => input.classList.remove('input-error', 'input-success'), type === 'success' ? 900 : 350);
 }
 
-export function showEndGame({ title, message, tone = 'success' }) {
+export function showEndGame({ title, message, tone = 'success', canShare = true }) {
   const panel = get(selectors.endgamePanel);
   const titleEl = get(selectors.endgameTitle);
   const messageEl = get(selectors.endgameMessage);
+  const shareBtn = get(selectors.shareResultBtn);
 
   document.body.classList.add('game-finished');
   document.body.classList.toggle('game-won', tone === 'success');
@@ -158,6 +201,7 @@ export function showEndGame({ title, message, tone = 'success' }) {
   }
   if (titleEl) titleEl.textContent = title;
   if (messageEl) messageEl.textContent = message;
+  if (shareBtn) shareBtn.hidden = !canShare;
 }
 
 export function clearEndGame() {
@@ -260,6 +304,56 @@ export function addGuessResult(guess, status, id = guess) {
   item.addEventListener('click', () => handlers.onHistoryClick?.(id, status));
   container.appendChild(item);
   container.scrollTop = container.scrollHeight;
+}
+
+export function renderStats(summary) {
+  const played = document.getElementById('stat-played');
+  const wins = document.getElementById('stat-wins');
+  const streak = document.getElementById('stat-streak');
+  const average = document.getElementById('stat-average');
+  const ranking = document.getElementById('local-ranking');
+
+  if (played) played.textContent = String(summary.played);
+  if (wins) wins.textContent = summary.wins + ' (' + summary.winRate + '%)';
+  if (streak) streak.textContent = summary.streak + ' / ' + summary.bestStreak;
+  if (average) average.textContent = String(summary.averageAttempts);
+
+  if (!ranking) return;
+  ranking.replaceChildren();
+  const items = summary.ranking || [];
+  if (!items.length) {
+    const empty = document.createElement('li');
+    empty.textContent = 'Sin rutas ganadas todavía.';
+    ranking.appendChild(empty);
+    return;
+  }
+
+  for (const item of items) {
+    const li = document.createElement('li');
+    const title = document.createElement('strong');
+    title.textContent = item.attempts + ' intento' + (item.attempts === 1 ? '' : 's');
+    const meta = document.createElement('span');
+    meta.textContent = item.route + ' · ' + item.difficulty + (item.daily ? ' · diaria' : '');
+    li.append(title, meta);
+    ranking.appendChild(li);
+  }
+}
+
+export function showTutorial() {
+  const modal = get(selectors.tutorialModal);
+  if (modal) modal.hidden = false;
+}
+
+export function hideTutorial() {
+  const modal = get(selectors.tutorialModal);
+  if (modal) modal.hidden = true;
+}
+
+export function updateSoundToggle(enabled) {
+  const button = get(selectors.soundToggleBtn);
+  if (!button) return;
+  button.textContent = enabled ? 'Sonido on' : 'Sonido off';
+  button.setAttribute('aria-pressed', enabled ? 'true' : 'false');
 }
 
 export function resetGameUI() {

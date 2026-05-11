@@ -1,4 +1,4 @@
-import { DEFAULT_DIFFICULTY, DIFICULTADES } from './constants.js';
+import { DEFAULT_DIFFICULTY, DIFICULTADES, HINTS_LIMIT } from './constants.js';
 
 const ALIASES = new Map([
   ['la_boca', 'boca'],
@@ -241,10 +241,42 @@ export function normalizeHints(rawHints) {
   return hints;
 }
 
+function dynamicHint(target, used) {
+  const name = displayName(target);
+  const letters = name.replace(/\s+/g, '').length;
+
+  if (!used.includes('letter')) {
+    return {
+      key: 'letter',
+      text: 'Empieza con la letra ' + name.charAt(0) + '.'
+    };
+  }
+
+  if (!used.includes('length')) {
+    return {
+      key: 'length',
+      text: 'Tiene ' + letters + ' letras sin contar espacios.'
+    };
+  }
+
+  if (!used.includes('words')) {
+    return {
+      key: 'words',
+      text: name.includes(' ') ? 'Su nombre tiene más de una palabra.' : 'Su nombre tiene una sola palabra.'
+    };
+  }
+
+  return null;
+}
+
 export function getHint(state, hints) {
   const target = getNextPendingId(state);
   if (!target) {
     return { ok: false, message: 'No quedan barrios pendientes.' };
+  }
+
+  if (state.usedHintCount >= HINTS_LIMIT) {
+    return { ok: false, message: 'No quedan pistas disponibles.' };
   }
 
   const used = state.usedHints[target] || [];
@@ -260,20 +292,20 @@ export function getHint(state, hints) {
     return { ok: true, target, text };
   }
 
-  if (!used.includes('letter')) {
-    used.push('letter');
+  const fallback = dynamicHint(target, used);
+  if (fallback) {
+    used.push(fallback.key);
     state.usedHints[target] = used;
     state.usedHintCount += 1;
-    const text = 'Empieza con la letra ' + displayName(target).charAt(0) + '.';
-    state.revealedHints.push(text);
-    return { ok: true, target, text };
+    state.revealedHints.push(fallback.text);
+    return { ok: true, target, text: fallback.text };
   }
 
   return { ok: false, target, message: 'No quedan más pistas para ese barrio.' };
 }
 
 export function markSilhouetteHint(state, target) {
-  if (!target || state.usedHintCount >= 3) return false;
+  if (!target || state.usedHintCount >= HINTS_LIMIT) return false;
   const used = state.usedHints[target] || [];
   if (used.includes('silhouette')) return false;
   used.push('silhouette');
