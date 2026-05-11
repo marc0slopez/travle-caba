@@ -172,6 +172,52 @@
       margin: 0 0 6px;
     }
 
+
+    .daily-option {
+      width: 100%;
+      border: 1px solid rgba(255, 216, 107, 0.45);
+      background:
+        linear-gradient(135deg, rgba(255, 216, 107, 0.12), rgba(117, 170, 219, 0.08)),
+        #222222;
+      color: var(--text);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .daily-option:hover,
+    .daily-option:focus-visible {
+      outline: none;
+      border-color: var(--accent-2);
+      background: #29261d;
+      transform: translateY(-1px);
+    }
+
+    .daily-option strong,
+    .daily-option span span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pro-pill {
+      color: #ffe4a3;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      align-self: center;
+    }
+
+    .panel-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 2px 0;
+    }
+
     .option {
       width: 100%;
       border: 1px solid var(--line);
@@ -327,7 +373,12 @@
     </section>
 
     <section class="panel" aria-label="Elegir dificultad">
-      <p class="eyebrow">Dificultad</p>
+      <button id="daily-route-btn" class="daily-option" type="button">
+        <span><strong>Ruta diaria</strong><span>Misma ruta para todos en tu dificultad</span></span>
+        <span class="pro-pill">PRO</span>
+      </button>
+      <div class="panel-divider"></div>
+      <p class="eyebrow">Rutas aleatorias por dificultad</p>
       <button class="option" type="button" data-level="facil">
         <span><strong>Turista</strong><span>1-2 barrios intermedios</span></span>
         <span class="stars">&#9733;&#9734;&#9734;</span>
@@ -414,6 +465,13 @@
         spriteField.style.setProperty('--my', '0px');
       });
     }
+
+    const dailyButton = document.getElementById('daily-route-btn');
+    dailyButton?.addEventListener('click', () => {
+      const level = localStorage.getItem('travle_dificultad') || 'medio';
+      localStorage.setItem('travle_dificultad', level);
+      location.href = 'travle.html?d=' + encodeURIComponent(level) + '&daily=1';
+    });
 
     for (const button of document.querySelectorAll('.option')) {
       button.addEventListener('click', () => {

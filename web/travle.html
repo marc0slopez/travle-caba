@@ -318,6 +318,142 @@
       color: #ffe5a0;
     }
 
+
+    .mode-badge {
+      width: max-content;
+      max-width: 100%;
+      margin: 10px auto 0;
+      padding: 5px 9px;
+      border: 1px solid rgba(117, 170, 219, 0.42);
+      border-radius: 999px;
+      color: #d7eaff;
+      background: rgba(117, 170, 219, 0.1);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .mode-badge[data-tone="daily"] {
+      border-color: rgba(255, 216, 107, 0.48);
+      color: #ffe7a8;
+      background: rgba(255, 216, 107, 0.1);
+    }
+
+    .pro-stats {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #151515;
+      padding: 14px;
+    }
+
+    .section-title,
+    .ranking-title {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .stats-grid div {
+      min-width: 0;
+      border: 1px solid #303030;
+      border-radius: 6px;
+      padding: 9px;
+      background: #1d1d1d;
+    }
+
+    .stats-grid span {
+      display: block;
+      color: var(--text);
+      font-weight: 850;
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .stats-grid small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .ranking-title {
+      margin-top: 14px;
+    }
+
+    .local-ranking {
+      margin: 8px 0 0;
+      padding-left: 20px;
+      color: #dcdcdc;
+      display: grid;
+      gap: 7px;
+      font-size: 13px;
+    }
+
+    .local-ranking li span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .endgame-share {
+      border-color: rgba(112, 193, 123, 0.52);
+      background: rgba(112, 193, 123, 0.1);
+      color: #c9f2d0;
+    }
+
+    .tutorial-modal[hidden] {
+      display: none;
+    }
+
+    .tutorial-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.68);
+    }
+
+    .tutorial-card {
+      width: min(440px, 100%);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      background: #191919;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.58);
+    }
+
+    .tutorial-kicker {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .tutorial-card h2 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .tutorial-card ol {
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: #d6d6d6;
+      line-height: 1.55;
+    }
+
     .input-group {
       position: relative;
       display: grid;
@@ -604,6 +740,14 @@
         min-height: 54vh;
       }
 
+      .endgame-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .pro-stats {
+        padding: 12px;
+      }
+
       .sidebar-footer {
         position: sticky;
         bottom: 0;
@@ -627,6 +771,7 @@
           <span class="route-node end-node" id="info-llegada">...</span>
         </div>
         <div id="progress-counter">0 / ? barrios</div>
+        <div id="mode-badge" class="mode-badge">Ruta aleatoria</div>
       </header>
 
       <section class="sidebar-content">
@@ -643,10 +788,24 @@
           <h2 id="endgame-title">Ruta completada</h2>
           <p id="endgame-message">Elegí cómo querés seguir jugando.</p>
           <div class="endgame-actions">
+            <button id="share-result-btn" class="endgame-action endgame-share" type="button">Compartir</button>
+            <button id="retry-route-btn" class="endgame-action" type="button">Reintentar</button>
             <button id="endgame-new-route-btn" class="endgame-action" type="button">Nueva Ruta</button>
             <a class="endgame-action endgame-secondary" href="index.html">Dificultad</a>
           </div>
         </div>
+
+        <section class="pro-stats" aria-label="Estadísticas locales">
+          <div class="section-title">Estadísticas</div>
+          <div class="stats-grid">
+            <div><span id="stat-played">0</span><small>Jugadas</small></div>
+            <div><span id="stat-wins">0</span><small>Ganadas</small></div>
+            <div><span id="stat-streak">0 / 0</span><small>Racha</small></div>
+            <div><span id="stat-average">-</span><small>Promedio</small></div>
+          </div>
+          <div class="ranking-title">Ranking local</div>
+          <ol id="local-ranking" class="local-ranking"></ol>
+        </section>
 
         <div>
           <div class="history-label">Intentos anteriores</div>
@@ -656,7 +815,10 @@
       </section>
 
       <footer class="sidebar-footer">
-        <button id="silhouette-btn" class="tool-btn" type="button">Ver Silueta</button>
+        <div class="row-tools">
+          <button id="silhouette-btn" class="tool-btn" type="button">Ver Silueta</button>
+          <button id="sound-toggle-btn" class="tool-btn" type="button" aria-pressed="false">Sonido off</button>
+        </div>
         <div class="row-tools">
           <button id="hint-btn" class="tool-btn" type="button">Pista</button>
           <button id="reset-btn" class="tool-btn" type="button">Pistas usadas</button>
@@ -667,6 +829,19 @@
         </div>
       </footer>
     </aside>
+  </div>
+
+  <div id="tutorial-modal" class="tutorial-modal" hidden>
+    <div class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+      <p class="tutorial-kicker">Cómo jugar</p>
+      <h2 id="tutorial-title">Conectá los barrios vecinos</h2>
+      <ol>
+        <li>Tenés un barrio de salida y uno de llegada.</li>
+        <li>Escribí los barrios intermedios que forman la ruta mínima.</li>
+        <li>Las pistas ayudan, pero quedan contadas en tu resultado.</li>
+      </ol>
+      <button id="tutorial-close-btn" class="endgame-action" type="button">Empezar</button>
+    </div>
   </div>
 
   <script type="module" src="js/main.js"></script>
