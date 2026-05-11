@@ -1,0 +1,12 @@
+{
+  "id": "amba-partidos",
+  "label": "AMBA Partidos",
+  "shortLabel": "AMBA",
+  "gameTitle": "YENDLE x AMBA",
+  "regionLabel": "Partidos y CABA",
+  "mapAriaLabel": "Mapa de partidos del AMBA",
+  "unitSingular": "partido",
+  "unitPlural": "partidos",
+  "defaultDifficulty": "medio",
+  "source": "Georef Argentina - Departamentos de Buenos Aires + CABA local"
+}
