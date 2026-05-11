@@ -193,12 +193,8 @@ export function renderMap(containerElement, _svgTextIgnored, barriosGeoJSON, onR
     const path = createSvgElement('path', {
       d: geometryToPath(feature.geometry, project),
       class: 'barrio-path',
-      'data-id': id,
-      tabindex: 0,
-      'aria-label': name
+      'data-id': id
     });
-    path.appendChild(createSvgElement('title'));
-    path.querySelector('title').textContent = name;
 
     idToElement.set(id, path);
     featureById.set(id, feature);
