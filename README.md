@@ -1,6 +1,6 @@
-# Travle CABA
+# YENDLE CABA/AMBA
 
-Adiviná la ruta entre barrios de la Ciudad de Buenos Aires. La idea es simple: te damos un barrio de origen y uno de destino, y tenés que descubrir qué barrios intermedios conectan el camino más corto.
+Adiviná la ruta entre barrios de la Ciudad y Provincia de Buenos Aires. La idea es simple: te damos un barrio de origen y uno de destino, y tenés que descubrir qué barrios intermedios conectan el camino más corto.
 
 Este proyecto quedó preparado como app web estática CABA-only, sin backend Flask y sin datos de GBA/Zona Norte, para que pueda publicarse en GitHub Pages.
 
