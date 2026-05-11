@@ -156,11 +156,11 @@
       position: relative;
       z-index: 4;
       border-left: 1px solid var(--line);
-      padding: 24px;
+      padding: clamp(28px, 4vw, 42px) 28px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 14px;
+      gap: clamp(16px, 2vh, 22px);
       background: var(--panel);
     }
 
@@ -302,11 +302,11 @@
     .map-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 10px;
     }
 
     .map-option {
-      min-height: 38px;
+      min-height: 48px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: #202020;
@@ -325,16 +325,18 @@
 
     .daily-option {
       width: 100%;
+      min-height: 82px;
       border: 1px solid rgba(255, 216, 107, 0.45);
       background:
         linear-gradient(135deg, rgba(255, 216, 107, 0.12), rgba(117, 170, 219, 0.08)),
         #222222;
       color: var(--text);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 18px 20px;
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 12px;
+      align-items: center;
       text-align: left;
       cursor: pointer;
       transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
@@ -348,10 +350,22 @@
       transform: translateY(-1px);
     }
 
-    .daily-option strong,
+    .daily-option > span:first-child {
+      min-width: 0;
+    }
+
+    .daily-option strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text);
+      font-size: 15px;
+    }
+
     .daily-option span span {
+      display: block;
       color: var(--muted);
       font-size: 13px;
+      line-height: 1.35;
     }
 
     .pro-pill {
@@ -370,14 +384,16 @@
 
     .option {
       width: 100%;
+      min-height: 90px;
       border: 1px solid var(--line);
       background: var(--panel-soft);
       color: var(--text);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 18px 20px;
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 12px;
+      align-items: center;
       text-align: left;
       cursor: pointer;
       transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
@@ -517,7 +533,7 @@
 
       <div class="hero-copy">
         <p class="eyebrow">Argentina en rutas</p>
-        <h1 id="title" class="brand">YENDLE <span>x CABA</span></h1>
+        <h1 id="title" class="brand">YENDLE <span id="home-region-label">x CABA</span></h1>
         <p class="copy">Jug&aacute; yendo de un lugar a otro: encontr&aacute; la cadena de barrios o partidos vecinos que conecta el origen con el destino.</p>
       </div>
       <footer>Hecho en Argentina</footer>
@@ -665,12 +681,48 @@
       });
     }
 
+    const homePackMeta = {
+      'caba-barrios': {
+        short: 'CABA',
+        title: 'YENDLE x CABA',
+        daily: 'Misma ruta para todos en CABA',
+        levels: {
+          facil: '1-2 barrios intermedios',
+          medio: '3 barrios intermedios',
+          dificil: '4-5 barrios intermedios'
+        }
+      },
+      'amba-partidos': {
+        short: 'AMBA',
+        title: 'YENDLE x AMBA',
+        daily: 'Misma ruta para todos en AMBA',
+        levels: {
+          facil: '1-2 partidos intermedios',
+          medio: '3 partidos intermedios',
+          dificil: '4-5 partidos intermedios'
+        }
+      }
+    };
+
     let selectedPack = localStorage.getItem('yendle_pack') || localStorage.getItem('travle_pack') || 'caba-barrios';
     if (!['caba-barrios', 'amba-partidos'].includes(selectedPack)) selectedPack = 'caba-barrios';
 
     function syncPackButtons() {
+      const meta = homePackMeta[selectedPack] || homePackMeta['caba-barrios'];
+      const regionLabel = document.getElementById('home-region-label');
+      const dailyCopy = document.querySelector('#daily-route-btn span span');
+
+      document.title = meta.title;
+      if (regionLabel) regionLabel.textContent = 'x ' + meta.short;
+      if (dailyCopy) dailyCopy.textContent = meta.daily;
+
       for (const button of document.querySelectorAll('.map-option')) {
         button.classList.toggle('is-active', button.dataset.pack === selectedPack);
+      }
+
+      for (const button of document.querySelectorAll('.option')) {
+        const description = button.querySelector('span span');
+        if (description) description.textContent = meta.levels[button.dataset.level] || description.textContent;
       }
     }
 

@@ -61,10 +61,15 @@ if (!mapContainer) {
 }
 
 async function init() {
+  const options = readGameOptions();
+  const initialPack = PACKS[options.packId] || PACKS[DEFAULT_PACK];
+  document.title = (initialPack.gameTitle || 'YENDLE') + ' | Juego';
+  UI.setPackLabels(initialPack);
+  UI.updateAciertos({ aciertos: 0, total: 0 });
+
   try {
     setStatus('Cargando datos...');
 
-    const options = readGameOptions();
     const data = await loadAllData(options.packId);
     const hints = normalizeHints(data.pistas);
     const names = buildDisplayNames(data.barrios);
@@ -273,7 +278,7 @@ async function init() {
 
         const target = getNextPendingId(state);
         if (!target) {
-          UI.showToast('No quedan barrios pendientes.', true);
+          UI.showToast('No quedan ' + (pack.unitPlural || 'barrios') + ' pendientes.', true);
           return;
         }
 

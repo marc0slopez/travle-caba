@@ -1,0 +1,222 @@
+{
+  "almirante_brown": [
+    "esteban_echeverria",
+    "florencio_varela",
+    "lomas_de_zamora",
+    "presidente_peron",
+    "quilmes",
+    "san_vicente"
+  ],
+  "avellaneda": [
+    "caba",
+    "lanus",
+    "quilmes"
+  ],
+  "berazategui": [
+    "florencio_varela",
+    "quilmes"
+  ],
+  "caba": [
+    "avellaneda",
+    "la_matanza",
+    "lanus",
+    "lomas_de_zamora",
+    "san_martin",
+    "tres_de_febrero",
+    "vicente_lopez"
+  ],
+  "canuelas": [
+    "esteban_echeverria",
+    "ezeiza",
+    "la_matanza",
+    "marcos_paz",
+    "san_vicente"
+  ],
+  "escobar": [
+    "malvinas_argentinas",
+    "pilar",
+    "tigre"
+  ],
+  "esteban_echeverria": [
+    "almirante_brown",
+    "canuelas",
+    "ezeiza",
+    "la_matanza",
+    "lomas_de_zamora",
+    "presidente_peron",
+    "san_vicente"
+  ],
+  "ezeiza": [
+    "canuelas",
+    "esteban_echeverria",
+    "la_matanza",
+    "presidente_peron"
+  ],
+  "florencio_varela": [
+    "almirante_brown",
+    "berazategui",
+    "presidente_peron",
+    "quilmes",
+    "san_vicente"
+  ],
+  "general_rodriguez": [
+    "marcos_paz",
+    "merlo",
+    "moreno",
+    "pilar"
+  ],
+  "hurlingham": [
+    "ituzaingo",
+    "moron",
+    "san_miguel",
+    "tres_de_febrero"
+  ],
+  "ituzaingo": [
+    "hurlingham",
+    "merlo",
+    "moreno",
+    "moron"
+  ],
+  "jose_c_paz": [
+    "malvinas_argentinas",
+    "moreno",
+    "pilar",
+    "san_miguel"
+  ],
+  "la_matanza": [
+    "caba",
+    "canuelas",
+    "esteban_echeverria",
+    "ezeiza",
+    "lomas_de_zamora",
+    "marcos_paz",
+    "merlo",
+    "moron",
+    "tres_de_febrero"
+  ],
+  "lanus": [
+    "avellaneda",
+    "caba",
+    "lomas_de_zamora",
+    "quilmes"
+  ],
+  "lomas_de_zamora": [
+    "almirante_brown",
+    "caba",
+    "esteban_echeverria",
+    "la_matanza",
+    "lanus",
+    "quilmes"
+  ],
+  "malvinas_argentinas": [
+    "escobar",
+    "jose_c_paz",
+    "pilar",
+    "san_martin",
+    "san_miguel",
+    "tigre"
+  ],
+  "marcos_paz": [
+    "canuelas",
+    "general_rodriguez",
+    "la_matanza",
+    "merlo"
+  ],
+  "merlo": [
+    "general_rodriguez",
+    "ituzaingo",
+    "la_matanza",
+    "marcos_paz",
+    "moreno",
+    "moron"
+  ],
+  "moreno": [
+    "general_rodriguez",
+    "ituzaingo",
+    "jose_c_paz",
+    "merlo",
+    "pilar",
+    "san_miguel"
+  ],
+  "moron": [
+    "hurlingham",
+    "ituzaingo",
+    "la_matanza",
+    "merlo",
+    "tres_de_febrero"
+  ],
+  "pilar": [
+    "escobar",
+    "general_rodriguez",
+    "jose_c_paz",
+    "malvinas_argentinas",
+    "moreno",
+    "tigre"
+  ],
+  "presidente_peron": [
+    "almirante_brown",
+    "esteban_echeverria",
+    "ezeiza",
+    "florencio_varela",
+    "san_vicente"
+  ],
+  "quilmes": [
+    "almirante_brown",
+    "avellaneda",
+    "berazategui",
+    "florencio_varela",
+    "lanus",
+    "lomas_de_zamora"
+  ],
+  "san_fernando": [
+    "san_isidro",
+    "tigre"
+  ],
+  "san_isidro": [
+    "san_fernando",
+    "san_martin",
+    "tigre",
+    "vicente_lopez"
+  ],
+  "san_martin": [
+    "caba",
+    "malvinas_argentinas",
+    "san_isidro",
+    "san_miguel",
+    "tres_de_febrero",
+    "vicente_lopez"
+  ],
+  "san_miguel": [
+    "hurlingham",
+    "jose_c_paz",
+    "malvinas_argentinas",
+    "moreno",
+    "san_martin"
+  ],
+  "san_vicente": [
+    "almirante_brown",
+    "canuelas",
+    "esteban_echeverria",
+    "florencio_varela",
+    "presidente_peron"
+  ],
+  "tigre": [
+    "escobar",
+    "malvinas_argentinas",
+    "pilar",
+    "san_fernando",
+    "san_isidro"
+  ],
+  "tres_de_febrero": [
+    "caba",
+    "hurlingham",
+    "la_matanza",
+    "moron",
+    "san_martin"
+  ],
+  "vicente_lopez": [
+    "caba",
+    "san_isidro",
+    "san_martin"
+  ]
+}
