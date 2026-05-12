@@ -87,6 +87,20 @@
       fill-rule: evenodd;
     }
 
+    .barrio-path[data-id="caba"] {
+      stroke-width: 0;
+    }
+
+    .barrio-path[data-id="caba"]:hover,
+    .barrio-path[data-id="caba"]:focus-visible,
+    .barrio-path[data-id="caba"].is-start,
+    .barrio-path[data-id="caba"].is-end,
+    .barrio-path[data-id="caba"].is-correct,
+    .barrio-path[data-id="caba"].is-wrong,
+    .barrio-path[data-id="caba"].is-silhouette {
+      stroke-width: 0;
+    }
+
     .barrio-path:hover,
     .barrio-path:focus-visible {
       outline: none;
