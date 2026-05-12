@@ -1,58 +1,80 @@
-# YENDLE CABA/AMBA
+# YENDLE
 
-Adiviná la ruta entre barrios de la Ciudad y Provincia de Buenos Aires. La idea es simple: te damos un barrio de origen y uno de destino, y tenés que descubrir qué barrios intermedios conectan el camino más corto.
+Juego argentino de rutas: conectá lugares vecinos hasta llegar de un punto a otro. El nombre viene de una forma muy nuestra de decir que estamos en camino: **yendo**.
 
-Este proyecto quedó preparado como app web estática CABA-only, sin backend Flask y sin datos de GBA/Zona Norte, para que pueda publicarse en GitHub Pages.
+La versión estable actual incluye **YENDLE x CABA** y una arquitectura inicial de **packs de mapas** para seguir expandiendo sin romper CABA.
 
 ## Estado actual
 
-- Juego 100% frontend con HTML, CSS y JavaScript modular.
-- Datos locales en \`web/data/\`: relaciones, pistas y GeoJSON de barrios de CABA.
-- Mapa SVG generado en el navegador desde el GeoJSON, sin Leaflet ni dependencias externas para renderizar la ciudad.
-- Dificultades:
-  - Turista: 1-2 barrios intermedios.
-  - Vecino: 3 barrios intermedios.
-  - Taxista: 4-5 barrios intermedios.
+- App 100% frontend, lista para GitHub Pages.
+- Motor de juego genérico para distintos mapas.
+- Packs disponibles:
+  - `caba-barrios`: barrios de la Ciudad de Buenos Aires.
+  - `amba-partidos`: CABA + partidos del AMBA como unidades de juego.
+- Modo diario con semilla por fecha y pack.
+- Rutas aleatorias por dificultad.
+- Estadísticas locales, racha, ranking local y compartir resultado.
+- Tutorial inicial, pistas, silueta y sonido opcional.
+
+## Versiones
+
+- **YENDLE x CABA**: barrios porteños.
+- **YENDLE x AMBA**: CABA y partidos del área metropolitana.
+- Futuro posible: **YENDLE x GBA**, **YENDLE x Comunas**, **YENDLE x Zona Norte**.
+
+## Dificultades
+
+- Turista: 1-2 unidades intermedias.
+- Vecino: 3 unidades intermedias.
+- Taxista: 4-5 unidades intermedias.
 
 ## Estructura
 
-\`\`\`text
+```text
 web/
   index.html
-  travle.html
+  yendle.html
   data/
-    barrios_caba.geojson
-    pistas.json
-    relaciones.json
+    packs/
+      caba-barrios/
+      amba-partidos/
   js/
     constants.js
     dataloader.js
     game.js
     graphs.js
     main.js
+    pro.js
     ui.js
 scripts/
   dev-server.mjs
 tests/
   game.test.mjs
-\`\`\`
+```
 
 ## Desarrollo local
 
-Requiere Node.js.
-
-\`\`\`bash
+```bash
 node scripts/dev-server.mjs
-\`\`\`
+```
 
-Después abrí \`http://localhost:4173\`.
+Después abrí `http://localhost:4173`.
+
+## URLs útiles
+
+- Home: `http://localhost:4173/index.html`
+- YENDLE x CABA: `http://localhost:4173/yendle.html?p=caba-barrios&d=facil`
+- YENDLE x AMBA: `http://localhost:4173/yendle.html?p=amba-partidos&d=facil`
 
 ## Tests
 
-\`\`\`bash
+```bash
 node tests/game.test.mjs
-\`\`\`
+```
 
-## Publicación en GitHub Pages
+## Datos
 
-La app está lista para publicarse desde la carpeta \`web/\` como sitio estático. En GitHub Pages podés configurar el deploy usando esa carpeta como raíz publicada, o mover el contenido de \`web/\` a la raíz si preferís un repositorio dedicado solo al sitio.
+- CABA barrios: GeoJSON local basado en datos abiertos de la Ciudad de Buenos Aires.
+- AMBA partidos: GeoJSON generado desde la descarga completa de Georef Argentina (`departamentos.geojson`), filtrando partidos de Buenos Aires, más CABA construida desde el mapa local.
+
+Las adyacencias de AMBA están explícitas en `web/data/packs/amba-partidos/relaciones.json` para poder auditarlas y corregirlas manualmente.
