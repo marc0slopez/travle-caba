@@ -42,7 +42,10 @@ export const PACKS = {
     "unitSingular": "partido",
     "unitPlural": "partidos",
     "defaultDifficulty": "medio",
-    "dataPath": "data/packs/amba-partidos"
+    "dataPath": "data/packs/amba-partidos",
+    "routeRules": {
+      "blockedIntermediateIds": ["caba"]
+    }
   }
 };
 
