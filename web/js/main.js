@@ -96,7 +96,9 @@ async function init() {
     function createRound() {
       state = createGame(data.relaciones, options.difficulty, randomForCurrentMode(), {
         unitSingular: pack.unitSingular,
-        mapLabel: pack.label
+        mapLabel: pack.label,
+        routeRules: pack.routeRules,
+        geojson: data.barrios
       });
       roundAttempts = 0;
       roundStartedAt = Date.now();
@@ -145,7 +147,9 @@ async function init() {
         usedHints: {},
         revealedHints: [],
         usedHintCount: 0,
-        status: 'playing'
+        status: 'playing',
+        unitSingular: pack.unitSingular,
+        mapLabel: pack.label
       };
       roundAttempts = 0;
       roundStartedAt = Date.now();
