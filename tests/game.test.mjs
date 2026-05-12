@@ -1,13 +1,18 @@
 import assert from 'node:assert/strict';
 import {
   buildGraph,
+  buildRouteWeights,
   canonicalId,
+  createGame,
   getHint,
   normalizeHints,
   progress,
   shortestPath,
   validateGuess
 } from '../web/js/game.js';
+
+import { seededRandom } from '../web/js/pro.js';
+import { loadAllData } from '../web/js/dataloader.js';
 
 const relaciones = {
   barrio_a: ['barrio_b'],
@@ -56,11 +61,39 @@ const hintState = {
   usedHintCount: 0,
   status: 'playing'
 };
+const dailyA = createGame(relaciones, 'facil', seededRandom('daily-test'));
+const dailyB = createGame(relaciones, 'facil', seededRandom('daily-test'));
+assert.deepEqual(dailyA.targetPath, dailyB.targetPath);
+
 const hints = normalizeHints({ 'Barrio C': ['Pista C'] });
 const hint = getHint(hintState, hints);
 assert.equal(hint.ok, true);
 assert.equal(hint.target, 'barrio_c');
 assert.equal(hint.text, 'Pista C');
 assert.equal(hintState.usedHintCount, 1);
+
+const cabaPack = await loadAllData('caba-barrios');
+assert.equal(cabaPack.pack.id, 'caba-barrios');
+assert.ok(cabaPack.barrios.features.length >= 48);
+assert.ok(Object.keys(cabaPack.relaciones).length >= 48);
+
+const ambaPack = await loadAllData('amba-partidos');
+assert.equal(ambaPack.pack.id, 'amba-partidos');
+assert.ok(ambaPack.barrios.features.length >= 30);
+assert.ok(Object.keys(ambaPack.relaciones).includes('caba'));
+assert.deepEqual(ambaPack.pack.routeRules.blockedIntermediateIds, ['caba']);
+
+const ambaGraph = buildGraph(ambaPack.relaciones);
+const ambaRouteOptions = {
+  blockedIntermediateIds: ambaPack.pack.routeRules.blockedIntermediateIds,
+  routeWeights: buildRouteWeights(ambaPack.relaciones, ambaPack.barrios)
+};
+const sanFernandoCanuelas = shortestPath(ambaGraph, 'san_fernando', 'canuelas', ambaRouteOptions);
+assert.ok(sanFernandoCanuelas);
+assert.equal(sanFernandoCanuelas.includes('caba'), false);
+const ezeizaTigre = shortestPath(ambaGraph, 'ezeiza', 'tigre', ambaRouteOptions);
+assert.ok(ezeizaTigre);
+assert.equal(ezeizaTigre.includes('caba'), false);
+assert.notDeepEqual(ezeizaTigre, ['ezeiza', 'canuelas', 'marcos_paz', 'general_rodriguez', 'pilar', 'tigre']);
 
 console.log('game.test.mjs: ok');
