@@ -8,5 +8,10 @@
   "unitSingular": "partido",
   "unitPlural": "partidos",
   "defaultDifficulty": "medio",
-  "source": "Georef Argentina - Departamentos de Buenos Aires + CABA local"
+  "source": "Georef Argentina - Departamentos de Buenos Aires + CABA local",
+  "routeRules": {
+    "blockedIntermediateIds": [
+      "caba"
+    ]
+  }
 }
