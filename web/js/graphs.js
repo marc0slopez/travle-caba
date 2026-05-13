@@ -1,5 +1,6 @@
 let svg = null;
 let pathsLayer = null;
+let decorationsLayer = null;
 let labelsLayer = null;
 let mapReady = false;
 let idToElement = new Map();
@@ -109,6 +110,109 @@ function geometryToPath(geometry, project) {
   return '';
 }
 
+function projectedFeatureBounds(feature, project) {
+  const bounds = {
+    minX: Infinity,
+    minY: Infinity,
+    maxX: -Infinity,
+    maxY: -Infinity
+  };
+
+  walkCoordinates(feature.geometry, (point) => {
+    const [x, y] = project(point);
+    bounds.minX = Math.min(bounds.minX, x);
+    bounds.maxX = Math.max(bounds.maxX, x);
+    bounds.minY = Math.min(bounds.minY, y);
+    bounds.maxY = Math.max(bounds.maxY, y);
+  });
+
+  if (!Number.isFinite(bounds.minX)) return null;
+
+  return {
+    ...bounds,
+    width: bounds.maxX - bounds.minX,
+    height: bounds.maxY - bounds.minY,
+    centerX: (bounds.minX + bounds.maxX) / 2,
+    centerY: (bounds.minY + bounds.maxY) / 2
+  };
+}
+
+function assetHref(src) {
+  try {
+    return new URL(src, document.baseURI).href;
+  } catch {
+    return String(src || '').replaceAll(' ', '%20');
+  }
+}
+
+function addDecorativeRegion(feature, decoration, project) {
+  const images = decoration?.images || [];
+  if (!decorationsLayer || !images.length) return;
+
+  const bounds = projectedFeatureBounds(feature, project);
+  if (!bounds) return;
+
+  const base = Math.max(bounds.width, bounds.height);
+  const size = Math.max(42, Math.min(92, base * 0.82));
+  const group = createSvgElement('g', {
+    class: 'map-region-decoration',
+    'data-region-id': normalizeName(feature.properties?.id || feature.properties?.name)
+  });
+
+  const glow = createSvgElement('ellipse', {
+    class: 'map-region-glow',
+    cx: bounds.centerX,
+    cy: bounds.centerY,
+    rx: Math.max(size * 0.95, bounds.width * 0.9),
+    ry: Math.max(size * 0.62, bounds.height * 0.78)
+  });
+  group.appendChild(glow);
+
+  const slots = [
+    { dx: -0.38, dy: -0.48, width: 0.42, height: 0.96, rotate: -5 },
+    { dx: 0.26, dy: -0.34, width: 0.54, height: 0.5, rotate: 8 },
+    { dx: -0.32, dy: 0.22, width: 0.58, height: 0.64, rotate: -6 },
+    { dx: 0.3, dy: 0.2, width: 0.84, height: 0.48, rotate: 5 }
+  ];
+
+  images.slice(0, slots.length).forEach((src, index) => {
+    const slot = slots[index];
+    const width = size * slot.width;
+    const height = size * slot.height;
+    const x = bounds.centerX + size * slot.dx - width / 2;
+    const y = bounds.centerY + size * slot.dy - height / 2;
+    const item = createSvgElement('g', {
+      class: 'map-region-sprite',
+      style: '--sprite-index: ' + index
+    });
+    item.setAttribute('transform', 'rotate(' + slot.rotate + ' ' + (x + width / 2).toFixed(2) + ' ' + (y + height / 2).toFixed(2) + ')');
+
+    const image = createSvgElement('image', {
+      href: assetHref(src),
+      x: x.toFixed(2),
+      y: y.toFixed(2),
+      width: width.toFixed(2),
+      height: height.toFixed(2),
+      preserveAspectRatio: 'xMidYMid meet'
+    });
+
+    const float = createSvgElement('animateTransform', {
+      attributeName: 'transform',
+      additive: 'sum',
+      type: 'translate',
+      values: '0 0; 0 ' + (index % 2 === 0 ? -4 : 4) + '; 0 0',
+      dur: (4.8 + index * 0.45).toFixed(2) + 's',
+      begin: (index * 0.35).toFixed(2) + 's',
+      repeatCount: 'indefinite'
+    });
+
+    item.append(image, float);
+    group.appendChild(item);
+  });
+
+  decorationsLayer.appendChild(group);
+}
+
 function featureCenter(feature, project) {
   const points = [];
   walkCoordinates(feature.geometry, (point) => points.push(point));
@@ -157,7 +261,7 @@ function setState(element, stateClass) {
   if (stateClass) element.classList.add(stateClass);
 }
 
-export function renderMap(containerElement, _svgTextIgnored, barriosGeoJSON, onReady) {
+export function renderMap(containerElement, _svgTextIgnored, barriosGeoJSON, onReady, options = {}) {
   const mapDiv = document.getElementById('mapa') || containerElement;
   if (!mapDiv || !barriosGeoJSON?.features?.length) return;
 
@@ -181,14 +285,24 @@ export function renderMap(containerElement, _svgTextIgnored, barriosGeoJSON, onR
   });
 
   pathsLayer = createSvgElement('g', { class: 'map-paths' });
+  decorationsLayer = createSvgElement('g', { class: 'map-decorations', 'aria-hidden': 'true' });
   labelsLayer = createSvgElement('g', { class: 'map-labels' });
-  svg.append(pathsLayer, labelsLayer);
+  svg.append(pathsLayer, decorationsLayer, labelsLayer);
+
+  const decorativeRegions = options.decorativeRegions || {};
 
   for (const feature of barriosGeoJSON.features) {
     const id = normalizeName(feature.properties?.id || feature.properties?.name || feature.properties?.BARRIO);
     const name = feature.properties?.displayName || feature.properties?.name || id;
     feature._center = featureCenter(feature, project);
     feature.properties.displayName = name;
+
+    featureById.set(id, feature);
+
+    if (decorativeRegions[id]) {
+      addDecorativeRegion(feature, decorativeRegions[id], project);
+      continue;
+    }
 
     const path = createSvgElement('path', {
       d: geometryToPath(feature.geometry, project),
@@ -197,7 +311,6 @@ export function renderMap(containerElement, _svgTextIgnored, barriosGeoJSON, onR
     });
 
     idToElement.set(id, path);
-    featureById.set(id, feature);
     pathsLayer.appendChild(path);
   }
 
