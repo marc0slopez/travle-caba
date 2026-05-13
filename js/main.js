@@ -84,7 +84,7 @@ async function init() {
     const difficultyLabel = DIFICULTADES[options.difficulty]?.label || 'Turista';
     const label = (id) => names[canonicalId(id)] || displayName(id);
     const autocompleteItems = () => Array.from(state.graph.keys())
-      .filter((id) => id !== state.start && id !== state.end)
+      .filter((id) => id !== state.start && id !== state.end && !state.excludedRouteIds?.has(id))
       .map((id) => ({ id, label: label(id) }))
       .sort((a, b) => a.label.localeCompare(b.label, 'es'));
 
@@ -96,7 +96,9 @@ async function init() {
     function createRound() {
       state = createGame(data.relaciones, options.difficulty, randomForCurrentMode(), {
         unitSingular: pack.unitSingular,
-        mapLabel: pack.label
+        mapLabel: pack.label,
+        routeRules: pack.routeRules,
+        geojson: data.barrios
       });
       roundAttempts = 0;
       roundStartedAt = Date.now();
@@ -145,7 +147,10 @@ async function init() {
         usedHints: {},
         revealedHints: [],
         usedHintCount: 0,
-        status: 'playing'
+        status: 'playing',
+        excludedRouteIds: new Set(state.excludedRouteIds || []),
+        unitSingular: pack.unitSingular,
+        mapLabel: pack.label
       };
       roundAttempts = 0;
       roundStartedAt = Date.now();
@@ -353,7 +358,9 @@ async function init() {
 
     UI.setPackLabels(pack);
     createRound();
-    Graphs.renderMap(mapContainer, null, data.barrios, drawInitialRoute);
+    Graphs.renderMap(mapContainer, null, data.barrios, drawInitialRoute, {
+      decorativeRegions: pack.decorativeRegions || {}
+    });
     syncHeader();
     syncStats();
     UI.updateSoundToggle(readSoundEnabled());
