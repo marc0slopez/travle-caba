@@ -192,6 +192,11 @@ function blockedIntermediateSet(options = {}) {
   return new Set(ids.map(canonicalId));
 }
 
+function excludedRouteSet(options = {}) {
+  const ids = options.excludedRouteIds || options.routeRules?.excludedRouteIds || [];
+  return new Set(ids.map(canonicalId));
+}
+
 export function shortestPath(graph, start, end, options = {}) {
   const from = canonicalId(start);
   const to = canonicalId(end);
@@ -241,7 +246,8 @@ export function shortestPath(graph, start, end, options = {}) {
 
 export function routesForDifficulty(graph, difficulty = DEFAULT_DIFFICULTY, options = {}) {
   const rule = DIFICULTADES[difficulty] || DIFICULTADES[DEFAULT_DIFFICULTY];
-  const nodes = Array.from(graph.keys());
+  const excluded = excludedRouteSet(options);
+  const nodes = Array.from(graph.keys()).filter((node) => !excluded.has(node));
   const routes = [];
 
   for (let i = 0; i < nodes.length; i += 1) {
@@ -262,6 +268,7 @@ export function createGame(relaciones, difficulty = DEFAULT_DIFFICULTY, random =
   const graph = buildGraph(relaciones);
   const routeOptions = {
     blockedIntermediateIds: options.blockedIntermediateIds || options.routeRules?.blockedIntermediateIds || [],
+    excludedRouteIds: options.excludedRouteIds || options.routeRules?.excludedRouteIds || [],
     routeWeights: options.routeWeights || buildRouteWeights(relaciones, options.geojson)
   };
   const routes = routesForDifficulty(graph, difficulty, routeOptions);
@@ -282,6 +289,7 @@ export function createGame(relaciones, difficulty = DEFAULT_DIFFICULTY, random =
     revealedHints: [],
     usedHintCount: 0,
     status: 'playing',
+    excludedRouteIds: new Set(routeOptions.excludedRouteIds.map(canonicalId)),
     unitSingular: options.unitSingular || 'barrio',
     mapLabel: options.mapLabel || 'este mapa'
   };
@@ -314,7 +322,7 @@ export function validateGuess(state, rawGuess) {
   }
 
   const id = canonicalId(rawGuess);
-  if (!state.graph.has(id)) {
+  if (!state.graph.has(id) || state.excludedRouteIds?.has(id)) {
     return { type: 'invalid', id, message: 'Ese ' + (state.unitSingular || 'barrio') + ' no está en ' + (state.mapLabel || 'este mapa') + '.' };
   }
 
