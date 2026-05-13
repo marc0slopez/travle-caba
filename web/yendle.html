@@ -189,11 +189,20 @@
     .brand-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: 12px;
     }
 
-    .help-icon-btn {
+    .header-actions {
+      min-width: 0;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .icon-btn {
       flex: 0 0 auto;
       width: 36px;
       height: 36px;
@@ -209,20 +218,49 @@
       line-height: 1;
     }
 
-    .help-icon-btn:hover,
-    .help-icon-btn:focus-visible {
+    .icon-btn:hover,
+    .icon-btn:focus-visible {
       outline: none;
       border-color: var(--accent);
       background: rgba(117, 170, 219, 0.14);
     }
 
+    .stats-bars {
+      width: 16px;
+      height: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: end;
+      gap: 2px;
+    }
+
+    .stats-bars span {
+      display: block;
+      border-radius: 2px 2px 0 0;
+      background: currentColor;
+    }
+
+    .stats-bars span:nth-child(1) {
+      height: 7px;
+    }
+
+    .stats-bars span:nth-child(2) {
+      height: 13px;
+    }
+
+    .stats-bars span:nth-child(3) {
+      height: 10px;
+    }
+
     .brand {
+      min-width: 0;
       display: inline-flex;
       gap: 6px;
       color: var(--text);
       text-decoration: none;
       font-size: 19px;
       font-weight: 800;
+      white-space: nowrap;
     }
 
     .brand span {
@@ -448,6 +486,52 @@
       color: var(--muted);
       font-size: 12px;
       line-height: 1.35;
+    }
+
+    .stats-modal[hidden] {
+      display: none;
+    }
+
+    .stats-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 49;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.66);
+    }
+
+    .stats-modal .pro-stats {
+      width: min(430px, calc(100vw - 32px));
+      max-height: min(78vh, 640px);
+      overflow: auto;
+      position: relative;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.48);
+    }
+
+    .stats-close-x {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #202020;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .stats-close-x:hover,
+    .stats-close-x:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(117, 170, 219, 0.14);
     }
 
     .endgame-share {
@@ -840,8 +924,13 @@
     <aside class="sidebar">
       <header class="sidebar-header">
         <div class="brand-row">
-          <a class="brand" href="index.html">YENDLE <span id="brand-region">x CABA</span></a>
-          <button id="instructions-btn" class="help-icon-btn" type="button" aria-label="Ver instrucciones" title="C&oacute;mo jugar">?</button>
+          <div class="header-actions">
+            <a class="brand" href="index.html">YENDLE <span id="brand-region">x CABA</span></a>
+            <button id="stats-btn" class="icon-btn stats-icon-btn" type="button" aria-label="Ver estad&iacute;sticas" title="Estad&iacute;sticas">
+              <span class="stats-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+            </button>
+            <button id="instructions-btn" class="icon-btn help-icon-btn" type="button" aria-label="Ver instrucciones" title="C&oacute;mo jugar">?</button>
+          </div>
         </div>
         <div class="route-info" aria-live="polite">
           <span class="route-node start-node" id="info-partida">...</span>
@@ -872,18 +961,6 @@
             <a class="endgame-action endgame-secondary" href="index.html">Dificultad</a>
           </div>
         </div>
-
-        <section class="pro-stats" aria-label="Estadísticas locales">
-          <div class="section-title">Estadísticas</div>
-          <div class="stats-grid">
-            <div><span id="stat-played">0</span><small>Jugadas</small></div>
-            <div><span id="stat-wins">0</span><small>Ganadas</small></div>
-            <div><span id="stat-streak">0 / 0</span><small>Racha</small></div>
-            <div><span id="stat-average">-</span><small>Promedio</small></div>
-          </div>
-          <div class="ranking-title">Ranking local</div>
-          <ol id="local-ranking" class="local-ranking"></ol>
-        </section>
 
         <div>
           <div class="history-label">Intentos anteriores</div>
@@ -920,6 +997,21 @@
       </ol>
       <button id="tutorial-close-btn" class="endgame-action" type="button">Entendido</button>
     </div>
+  </div>
+
+  <div id="stats-modal" class="stats-modal" hidden>
+    <section class="pro-stats stats-card" role="dialog" aria-modal="true" aria-labelledby="stats-modal-title">
+      <button id="stats-close-btn" class="stats-close-x" type="button" aria-label="Cerrar estad&iacute;sticas">x</button>
+      <div class="section-title" id="stats-modal-title">Estad&iacute;sticas</div>
+      <div class="stats-grid">
+        <div><span id="stat-played">0</span><small>Jugadas</small></div>
+        <div><span id="stat-wins">0</span><small>Ganadas</small></div>
+        <div><span id="stat-streak">0 / 0</span><small>Racha</small></div>
+        <div><span id="stat-average">-</span><small>Promedio</small></div>
+      </div>
+      <div class="ranking-title">Ranking local</div>
+      <ol id="local-ranking" class="local-ranking"></ol>
+    </section>
   </div>
 
   <script type="module" src="js/main.js"></script>
