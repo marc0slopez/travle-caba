@@ -21,7 +21,10 @@ const selectors = {
   tutorialModal: '#tutorial-modal',
   tutorialOpenBtn: '#instructions-btn',
   tutorialCloseBtn: '#tutorial-close-btn',
-  tutorialCloseXBtn: '#tutorial-close-x-btn'
+  tutorialCloseXBtn: '#tutorial-close-x-btn',
+  statsModal: '#stats-modal',
+  statsOpenBtn: '#stats-btn',
+  statsCloseBtn: '#stats-close-btn'
 };
 
 let initialized = false;
@@ -78,6 +81,12 @@ export function setupUI() {
   get(selectors.shareResultBtn)?.addEventListener('click', () => handlers.onShare?.());
   get(selectors.retryRouteBtn)?.addEventListener('click', () => handlers.onRetryRoute?.());
   get(selectors.soundToggleBtn)?.addEventListener('click', () => handlers.onSoundToggle?.());
+  const closeStats = () => hideStats();
+  get(selectors.statsOpenBtn)?.addEventListener('click', showStats);
+  get(selectors.statsCloseBtn)?.addEventListener('click', closeStats);
+  get(selectors.statsModal)?.addEventListener('click', (event) => {
+    if (event.target === get(selectors.statsModal)) closeStats();
+  });
   const closeTutorial = () => {
     hideTutorial();
     handlers.onTutorialClose?.();
@@ -89,8 +98,11 @@ export function setupUI() {
     if (event.target === get(selectors.tutorialModal)) closeTutorial();
   });
   document.addEventListener('keydown', (event) => {
-    const modal = get(selectors.tutorialModal);
-    if (event.key === 'Escape' && modal && !modal.hidden) closeTutorial();
+    if (event.key !== 'Escape') return;
+    const tutorialModal = get(selectors.tutorialModal);
+    const statsModal = get(selectors.statsModal);
+    if (tutorialModal && !tutorialModal.hidden) closeTutorial();
+    if (statsModal && !statsModal.hidden) closeStats();
   });
   get(selectors.resetBtn)?.addEventListener('click', () => handlers.onReset?.());
   get(selectors.giveUpBtn)?.addEventListener('click', () => {
@@ -372,6 +384,16 @@ export function showTutorial() {
 
 export function hideTutorial() {
   const modal = get(selectors.tutorialModal);
+  if (modal) modal.hidden = true;
+}
+
+export function showStats() {
+  const modal = get(selectors.statsModal);
+  if (modal) modal.hidden = false;
+}
+
+export function hideStats() {
+  const modal = get(selectors.statsModal);
   if (modal) modal.hidden = true;
 }
 
