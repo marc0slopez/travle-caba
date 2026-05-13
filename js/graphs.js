@@ -138,10 +138,15 @@ function projectedFeatureBounds(feature, project) {
 }
 
 function assetHref(src) {
+  const value = String(src || '');
+  const publicPath = value.startsWith('data/') && !location.pathname.includes('/web/')
+    ? 'web/' + value
+    : value;
+
   try {
-    return new URL(src, document.baseURI).href;
+    return new URL(publicPath, document.baseURI).href;
   } catch {
-    return String(src || '').replaceAll(' ', '%20');
+    return publicPath.replaceAll(' ', '%20');
   }
 }
 
@@ -393,3 +398,4 @@ export function triggerErrorAnimation() {
   mapContainer.classList.add('anim-shake');
   window.setTimeout(() => mapContainer.classList.remove('anim-shake'), 400);
 }
+
