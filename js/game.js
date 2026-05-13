@@ -117,39 +117,142 @@ export function buildGraph(relaciones) {
   return graph;
 }
 
-export function shortestPath(graph, start, end) {
+function walkGeoCoordinates(geometry, callback) {
+  if (geometry?.type === 'Polygon') {
+    for (const ring of geometry.coordinates || []) {
+      for (const point of ring) callback(point);
+    }
+  }
+
+  if (geometry?.type === 'MultiPolygon') {
+    for (const polygon of geometry.coordinates || []) {
+      for (const ring of polygon) {
+        for (const point of ring) callback(point);
+      }
+    }
+  }
+}
+
+function featureCenterLonLat(feature) {
+  let minLon = Infinity;
+  let minLat = Infinity;
+  let maxLon = -Infinity;
+  let maxLat = -Infinity;
+
+  walkGeoCoordinates(feature.geometry, ([lon, lat]) => {
+    minLon = Math.min(minLon, lon);
+    maxLon = Math.max(maxLon, lon);
+    minLat = Math.min(minLat, lat);
+    maxLat = Math.max(maxLat, lat);
+  });
+
+  if (!Number.isFinite(minLon)) return null;
+  return [(minLon + maxLon) / 2, (minLat + maxLat) / 2];
+}
+
+function distanceLonLat(a, b) {
+  if (!a || !b) return 1;
+  const meanLat = ((a[1] + b[1]) / 2) * Math.PI / 180;
+  const dx = (a[0] - b[0]) * Math.cos(meanLat);
+  const dy = a[1] - b[1];
+  return Math.hypot(dx, dy) || 1;
+}
+
+function edgeKey(a, b) {
+  return a < b ? a + '|' + b : b + '|' + a;
+}
+
+export function buildRouteWeights(relaciones, geojson) {
+  const centers = new Map();
+  for (const feature of geojson?.features || []) {
+    const id = canonicalId(feature.properties?.id || feature.properties?.name || feature.properties?.BARRIO);
+    const center = featureCenterLonLat(feature);
+    if (center) centers.set(id, center);
+  }
+
+  const weights = new Map();
+  for (const [rawId, rawNeighbors] of Object.entries(relaciones || {})) {
+    const id = canonicalId(rawId);
+    for (const rawNeighbor of rawNeighbors || []) {
+      const neighbor = canonicalId(rawNeighbor);
+      weights.set(edgeKey(id, neighbor), distanceLonLat(centers.get(id), centers.get(neighbor)));
+    }
+  }
+  return weights;
+}
+
+function edgeWeight(weights, a, b) {
+  if (!weights) return 1;
+  if (weights instanceof Map) return weights.get(edgeKey(a, b)) || 1;
+  return weights[edgeKey(a, b)] || weights[a + '|' + b] || weights[b + '|' + a] || 1;
+}
+
+function blockedIntermediateSet(options = {}) {
+  const ids = options.blockedIntermediateIds || options.routeRules?.blockedIntermediateIds || [];
+  return new Set(ids.map(canonicalId));
+}
+
+function excludedRouteSet(options = {}) {
+  const ids = options.excludedRouteIds || options.routeRules?.excludedRouteIds || [];
+  return new Set(ids.map(canonicalId));
+}
+
+export function shortestPath(graph, start, end, options = {}) {
   const from = canonicalId(start);
   const to = canonicalId(end);
   if (!graph.has(from) || !graph.has(to)) return null;
   if (from === to) return [from];
 
-  const queue = [[from]];
-  const visited = new Set([from]);
+  const blocked = blockedIntermediateSet(options);
+  const weights = options.weights || options.routeWeights || null;
+  const queue = [{ path: [from], hops: 0, distance: 0, order: 0 }];
+  const best = new Map([[from, { hops: 0, distance: 0 }]]);
+  let order = 1;
 
   while (queue.length) {
-    const path = queue.shift();
-    const last = path[path.length - 1];
+    queue.sort((a, b) => (
+      a.hops - b.hops ||
+      a.distance - b.distance ||
+      a.order - b.order
+    ));
+
+    const current = queue.shift();
+    const last = current.path[current.path.length - 1];
+    if (last === to) return current.path;
 
     for (const next of graph.get(last) || []) {
-      if (visited.has(next)) continue;
-      const nextPath = path.concat(next);
-      if (next === to) return nextPath;
-      visited.add(next);
-      queue.push(nextPath);
+      if (current.path.includes(next)) continue;
+      if (next !== to && blocked.has(next)) continue;
+
+      const hops = current.hops + 1;
+      const distance = current.distance + edgeWeight(weights, last, next);
+      const previous = best.get(next);
+      if (previous && (previous.hops < hops || (previous.hops === hops && previous.distance <= distance))) {
+        continue;
+      }
+
+      best.set(next, { hops, distance });
+      queue.push({
+        path: current.path.concat(next),
+        hops,
+        distance,
+        order: order++
+      });
     }
   }
 
   return null;
 }
 
-export function routesForDifficulty(graph, difficulty = DEFAULT_DIFFICULTY) {
+export function routesForDifficulty(graph, difficulty = DEFAULT_DIFFICULTY, options = {}) {
   const rule = DIFICULTADES[difficulty] || DIFICULTADES[DEFAULT_DIFFICULTY];
-  const nodes = Array.from(graph.keys());
+  const excluded = excludedRouteSet(options);
+  const nodes = Array.from(graph.keys()).filter((node) => !excluded.has(node));
   const routes = [];
 
   for (let i = 0; i < nodes.length; i += 1) {
     for (let j = i + 1; j < nodes.length; j += 1) {
-      const path = shortestPath(graph, nodes[i], nodes[j]);
+      const path = shortestPath(graph, nodes[i], nodes[j], options);
       if (!path) continue;
       const intermedios = path.length - 2;
       if (intermedios >= rule.minIntermedios && intermedios <= rule.maxIntermedios) {
@@ -163,7 +266,12 @@ export function routesForDifficulty(graph, difficulty = DEFAULT_DIFFICULTY) {
 
 export function createGame(relaciones, difficulty = DEFAULT_DIFFICULTY, random = Math.random, options = {}) {
   const graph = buildGraph(relaciones);
-  const routes = routesForDifficulty(graph, difficulty);
+  const routeOptions = {
+    blockedIntermediateIds: options.blockedIntermediateIds || options.routeRules?.blockedIntermediateIds || [],
+    excludedRouteIds: options.excludedRouteIds || options.routeRules?.excludedRouteIds || [],
+    routeWeights: options.routeWeights || buildRouteWeights(relaciones, options.geojson)
+  };
+  const routes = routesForDifficulty(graph, difficulty, routeOptions);
   if (!routes.length) {
     throw new Error('No hay rutas disponibles para la dificultad seleccionada.');
   }
@@ -181,6 +289,7 @@ export function createGame(relaciones, difficulty = DEFAULT_DIFFICULTY, random =
     revealedHints: [],
     usedHintCount: 0,
     status: 'playing',
+    excludedRouteIds: new Set(routeOptions.excludedRouteIds.map(canonicalId)),
     unitSingular: options.unitSingular || 'barrio',
     mapLabel: options.mapLabel || 'este mapa'
   };
@@ -213,7 +322,7 @@ export function validateGuess(state, rawGuess) {
   }
 
   const id = canonicalId(rawGuess);
-  if (!state.graph.has(id)) {
+  if (!state.graph.has(id) || state.excludedRouteIds?.has(id)) {
     return { type: 'invalid', id, message: 'Ese ' + (state.unitSingular || 'barrio') + ' no está en ' + (state.mapLabel || 'este mapa') + '.' };
   }
 
