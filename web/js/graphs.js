@@ -158,7 +158,7 @@ function addDecorativeRegion(feature, decoration, project) {
   if (!bounds) return;
 
   const base = Math.max(bounds.width, bounds.height);
-  const size = Math.max(42, Math.min(92, base * 0.82));
+  const size = Math.max(122, Math.min(205, base * 1.65));
   const group = createSvgElement('g', {
     class: 'map-region-decoration',
     'data-region-id': normalizeName(feature.properties?.id || feature.properties?.name)
@@ -168,16 +168,16 @@ function addDecorativeRegion(feature, decoration, project) {
     class: 'map-region-glow',
     cx: bounds.centerX,
     cy: bounds.centerY,
-    rx: Math.max(size * 0.95, bounds.width * 0.9),
-    ry: Math.max(size * 0.62, bounds.height * 0.78)
+    rx: Math.max(size * 0.74, bounds.width * 1.08),
+    ry: Math.max(size * 0.48, bounds.height * 0.98)
   });
   group.appendChild(glow);
 
   const slots = [
-    { dx: -0.38, dy: -0.48, width: 0.42, height: 0.96, rotate: -5 },
-    { dx: 0.26, dy: -0.34, width: 0.54, height: 0.5, rotate: 8 },
-    { dx: -0.32, dy: 0.22, width: 0.58, height: 0.64, rotate: -6 },
-    { dx: 0.3, dy: 0.2, width: 0.84, height: 0.48, rotate: 5 }
+    { dx: -0.46, dy: -0.12, width: 0.34, height: 1.08, rotate: -4 },
+    { dx: 0.18, dy: -0.36, width: 0.46, height: 0.44, rotate: 8 },
+    { dx: -0.28, dy: 0.28, width: 0.54, height: 0.68, rotate: -5 },
+    { dx: 0.26, dy: 0.2, width: 0.92, height: 0.46, rotate: 4 }
   ];
 
   images.slice(0, slots.length).forEach((src, index) => {
