@@ -46,17 +46,6 @@ export const PACKS = {
     "routeRules": {
       "blockedIntermediateIds": ["caba"],
       "excludedRouteIds": ["caba"]
-    },
-    "decorativeRegions": {
-      "caba": {
-        "label": "Postales de CABA",
-        "images": [
-          "data/images/caba/obelo.png",
-          "data/images/caba/empa frasco.png",
-          "data/images/caba/caminito.png",
-          "data/images/caba/teatro colon.png"
-        ]
-      }
     }
   }
 };
@@ -68,3 +57,4 @@ export const HINTS_LIMIT = 3;
 export function resolvePackId(value) {
   return PACKS[value] ? value : DEFAULT_PACK;
 }
+
