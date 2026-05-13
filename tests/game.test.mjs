@@ -83,7 +83,7 @@ assert.ok(ambaPack.barrios.features.length >= 30);
 assert.ok(Object.keys(ambaPack.relaciones).includes('caba'));
 assert.deepEqual(ambaPack.pack.routeRules.blockedIntermediateIds, ['caba']);
 assert.deepEqual(ambaPack.pack.routeRules.excludedRouteIds, ['caba']);
-assert.ok(ambaPack.pack.decorativeRegions.caba.images.includes('data/images/caba/obelo.png'));
+assert.ok(ambaPack.pack.decorativeRegions.caba.images[0].startsWith('data:image/png;base64,'));
 const sanFernandoFeature = ambaPack.barrios.features.find((feature) => feature.properties.id === 'san_fernando');
 assert.equal(sanFernandoFeature.geometry.type, 'Polygon');
 assert.equal(sanFernandoFeature.properties.deltaIslandsRemoved, true);
@@ -114,3 +114,4 @@ for (let i = 0; i < 40; i += 1) {
 }
 
 console.log('game.test.mjs: ok');
+
