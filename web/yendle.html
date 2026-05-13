@@ -93,15 +93,25 @@
       pointer-events: none;
     }
 
-    .map-region-glow {
-      fill: rgba(117, 170, 219, 0.08);
-      stroke: rgba(255, 216, 107, 0.14);
-      stroke-width: 1;
+    .map-region-fill {
+      fill: rgba(24, 24, 24, 0.88);
+      stroke: none;
+    }
+
+    .map-region-collage {
+      opacity: 0.98;
     }
 
     .map-region-sprite {
-      opacity: 0.76;
-      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.55));
+      opacity: 0.96;
+      filter: saturate(1.04) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.5));
+    }
+
+    .map-region-outline {
+      fill: none;
+      stroke: rgba(255, 216, 107, 0.42);
+      stroke-width: 1.25;
+      vector-effect: non-scaling-stroke;
     }
 
     .barrio-path:hover,
