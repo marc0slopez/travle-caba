@@ -87,18 +87,21 @@
       fill-rule: evenodd;
     }
 
-    .barrio-path[data-id="caba"] {
-      stroke-width: 0;
+    .map-decorations,
+    .map-region-decoration,
+    .map-region-sprite {
+      pointer-events: none;
     }
 
-    .barrio-path[data-id="caba"]:hover,
-    .barrio-path[data-id="caba"]:focus-visible,
-    .barrio-path[data-id="caba"].is-start,
-    .barrio-path[data-id="caba"].is-end,
-    .barrio-path[data-id="caba"].is-correct,
-    .barrio-path[data-id="caba"].is-wrong,
-    .barrio-path[data-id="caba"].is-silhouette {
-      stroke-width: 0;
+    .map-region-glow {
+      fill: rgba(117, 170, 219, 0.08);
+      stroke: rgba(255, 216, 107, 0.14);
+      stroke-width: 1;
+    }
+
+    .map-region-sprite {
+      opacity: 0.76;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.55));
     }
 
     .barrio-path:hover,
