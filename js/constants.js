@@ -42,7 +42,22 @@ export const PACKS = {
     "unitSingular": "partido",
     "unitPlural": "partidos",
     "defaultDifficulty": "medio",
-    "dataPath": "data/packs/amba-partidos"
+    "dataPath": "data/packs/amba-partidos",
+    "routeRules": {
+      "blockedIntermediateIds": ["caba"],
+      "excludedRouteIds": ["caba"]
+    },
+    "decorativeRegions": {
+      "caba": {
+        "label": "Postales de CABA",
+        "images": [
+          "data/images/caba/obelo.png",
+          "data/images/caba/empa frasco.png",
+          "data/images/caba/caminito.png",
+          "data/images/caba/teatro colon.png"
+        ]
+      }
+    }
   }
 };
 
