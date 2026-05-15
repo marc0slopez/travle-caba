@@ -1,0 +1,562 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "packId": "gba-sur-partidos",
+    "ariaLabel": "Mapa de partidos de GBA Sur",
+    "source": "https://apis.datos.gob.ar/georef/api/v2.0/departamentos.geojson"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "almirante_brown",
+        "name": "Almirante Brown",
+        "displayName": "Almirante Brown",
+        "sourceId": "06028",
+        "sourceName": "Almirante Brown",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.333957,
+              -34.758241
+            ],
+            [
+              -58.309779,
+              -34.793387
+            ],
+            [
+              -58.3328,
+              -34.805754
+            ],
+            [
+              -58.292471,
+              -34.854868
+            ],
+            [
+              -58.396445,
+              -34.909881
+            ],
+            [
+              -58.447753,
+              -34.825989
+            ],
+            [
+              -58.333957,
+              -34.758241
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "avellaneda",
+        "name": "Avellaneda",
+        "displayName": "Avellaneda",
+        "sourceId": "06035",
+        "sourceName": "Avellaneda",
+        "cordon": "primero cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.338381,
+              -34.633576
+            ],
+            [
+              -58.279639,
+              -34.678642
+            ],
+            [
+              -58.333505,
+              -34.726984
+            ],
+            [
+              -58.406505,
+              -34.663512
+            ],
+            [
+              -58.338381,
+              -34.633576
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "berazategui",
+        "name": "Berazategui",
+        "displayName": "Berazategui",
+        "sourceId": "06091",
+        "sourceName": "Berazategui",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.191008,
+              -34.738198
+            ],
+            [
+              -58.017688,
+              -34.780318
+            ],
+            [
+              -58.211085,
+              -34.951783
+            ],
+            [
+              -58.247414,
+              -34.923592
+            ],
+            [
+              -58.179871,
+              -34.866004
+            ],
+            [
+              -58.199915,
+              -34.813772
+            ],
+            [
+              -58.267461,
+              -34.773646
+            ],
+            [
+              -58.191008,
+              -34.738198
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "esteban_echeverria",
+        "name": "Esteban Echeverría",
+        "displayName": "Esteban Echeverría",
+        "sourceId": "06260",
+        "sourceName": "Esteban Echeverría",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.500797,
+              -34.722992
+            ],
+            [
+              -58.430528,
+              -34.817248
+            ],
+            [
+              -58.447753,
+              -34.825989
+            ],
+            [
+              -58.413042,
+              -34.873576
+            ],
+            [
+              -58.49186,
+              -34.927632
+            ],
+            [
+              -58.510333,
+              -34.901681
+            ],
+            [
+              -58.502852,
+              -34.854959
+            ],
+            [
+              -58.524502,
+              -34.779139
+            ],
+            [
+              -58.520507,
+              -34.741056
+            ],
+            [
+              -58.500797,
+              -34.722992
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ezeiza",
+        "name": "Ezeiza",
+        "displayName": "Ezeiza",
+        "sourceId": "06270",
+        "sourceName": "Ezeiza",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.520507,
+              -34.741056
+            ],
+            [
+              -58.524458,
+              -34.779966
+            ],
+            [
+              -58.502852,
+              -34.854959
+            ],
+            [
+              -58.510333,
+              -34.901681
+            ],
+            [
+              -58.490155,
+              -34.928838
+            ],
+            [
+              -58.55317,
+              -34.976277
+            ],
+            [
+              -58.556271,
+              -35.007048
+            ],
+            [
+              -58.620151,
+              -34.960741
+            ],
+            [
+              -58.599054,
+              -34.942952
+            ],
+            [
+              -58.650331,
+              -34.891087
+            ],
+            [
+              -58.615506,
+              -34.818527
+            ],
+            [
+              -58.568155,
+              -34.758829
+            ],
+            [
+              -58.537507,
+              -34.756953
+            ],
+            [
+              -58.520507,
+              -34.741056
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "florencio_varela",
+        "name": "Florencio Varela",
+        "displayName": "Florencio Varela",
+        "sourceId": "06274",
+        "sourceName": "Florencio Varela",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.267461,
+              -34.773646
+            ],
+            [
+              -58.199915,
+              -34.813772
+            ],
+            [
+              -58.179871,
+              -34.866004
+            ],
+            [
+              -58.247414,
+              -34.923592
+            ],
+            [
+              -58.211085,
+              -34.951783
+            ],
+            [
+              -58.277172,
+              -35.009418
+            ],
+            [
+              -58.300786,
+              -34.971682
+            ],
+            [
+              -58.288205,
+              -34.965044
+            ],
+            [
+              -58.316317,
+              -34.926331
+            ],
+            [
+              -58.274607,
+              -34.91706
+            ],
+            [
+              -58.317148,
+              -34.868154
+            ],
+            [
+              -58.292471,
+              -34.854868
+            ],
+            [
+              -58.332806,
+              -34.805737
+            ],
+            [
+              -58.309779,
+              -34.793387
+            ],
+            [
+              -58.304114,
+              -34.801165
+            ],
+            [
+              -58.298454,
+              -34.783439
+            ],
+            [
+              -58.267461,
+              -34.773646
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "lanus",
+        "name": "Lanús",
+        "displayName": "Lanús",
+        "sourceId": "06434",
+        "sourceName": "Lanús",
+        "cordon": "primero cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.408451,
+              -34.660135
+            ],
+            [
+              -58.333505,
+              -34.726984
+            ],
+            [
+              -58.347314,
+              -34.73984
+            ],
+            [
+              -58.413453,
+              -34.732627
+            ],
+            [
+              -58.446915,
+              -34.688777
+            ],
+            [
+              -58.408451,
+              -34.660135
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "lomas_de_zamora",
+        "name": "Lomas de Zamora",
+        "displayName": "Lomas de Zamora",
+        "sourceId": "06490",
+        "sourceName": "Lomas de Zamora",
+        "cordon": "primero cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.434443,
+              -34.705195
+            ],
+            [
+              -58.413269,
+              -34.732865
+            ],
+            [
+              -58.346962,
+              -34.739344
+            ],
+            [
+              -58.336639,
+              -34.754401
+            ],
+            [
+              -58.430528,
+              -34.817248
+            ],
+            [
+              -58.500797,
+              -34.722992
+            ],
+            [
+              -58.483902,
+              -34.732136
+            ],
+            [
+              -58.446915,
+              -34.688777
+            ],
+            [
+              -58.434443,
+              -34.705195
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "presidente_peron",
+        "name": "Presidente Perón",
+        "displayName": "Presidente Perón",
+        "sourceId": "06648",
+        "sourceName": "Presidente Perón",
+        "cordon": "tercero cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.404666,
+              -34.898557
+            ],
+            [
+              -58.396445,
+              -34.909881
+            ],
+            [
+              -58.31246,
+              -34.874838
+            ],
+            [
+              -58.274607,
+              -34.91706
+            ],
+            [
+              -58.37762,
+              -34.950493
+            ],
+            [
+              -58.468702,
+              -35.011275
+            ],
+            [
+              -58.463054,
+              -34.951454
+            ],
+            [
+              -58.49186,
+              -34.927632
+            ],
+            [
+              -58.413042,
+              -34.873576
+            ],
+            [
+              -58.404666,
+              -34.898557
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "quilmes",
+        "name": "Quilmes",
+        "displayName": "Quilmes",
+        "sourceId": "06658",
+        "sourceName": "Quilmes",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.26292,
+              -34.687572
+            ],
+            [
+              -58.194645,
+              -34.735695
+            ],
+            [
+              -58.298454,
+              -34.783439
+            ],
+            [
+              -58.304114,
+              -34.801165
+            ],
+            [
+              -58.346962,
+              -34.739344
+            ],
+            [
+              -58.279639,
+              -34.678642
+            ],
+            [
+              -58.26292,
+              -34.687572
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -35,9 +35,15 @@ function readGameOptions() {
   const params = new URLSearchParams(location.search);
   const packId = resolvePackId(params.get('p') || localStorage.getItem('yendle_pack') || localStorage.getItem('travle_pack') || DEFAULT_PACK);
   const pack = PACKS[packId] || PACKS[DEFAULT_PACK];
-  const rawDifficulty = (params.get('d') || localStorage.getItem('yendle_dificultad') || localStorage.getItem('travle_dificultad') || pack.defaultDifficulty || DEFAULT_DIFFICULTY).toLowerCase();
-  const difficulty = ['facil', 'medio', 'dificil'].includes(rawDifficulty) ? rawDifficulty : (pack.defaultDifficulty || DEFAULT_DIFFICULTY);
-  const isDaily = params.get('daily') === '1';
+  const dailyOnly = !!pack.routeRules?.dailyOnly;
+  const rawDifficultySource = dailyOnly
+    ? pack.defaultDifficulty
+    : (params.get('d') || localStorage.getItem('yendle_dificultad') || localStorage.getItem('travle_dificultad') || pack.defaultDifficulty || DEFAULT_DIFFICULTY);
+  const rawDifficulty = String(rawDifficultySource || DEFAULT_DIFFICULTY).toLowerCase();
+  const allowedDifficulties = pack.routeRules?.availableDifficulties || ['facil', 'medio', 'dificil'];
+  const fallbackDifficulty = allowedDifficulties.includes(pack.defaultDifficulty) ? pack.defaultDifficulty : allowedDifficulties[0] || DEFAULT_DIFFICULTY;
+  const difficulty = allowedDifficulties.includes(rawDifficulty) ? rawDifficulty : fallbackDifficulty;
+  const isDaily = dailyOnly || params.get('daily') === '1';
   localStorage.setItem('yendle_pack', packId);
   return {
     packId,
@@ -80,6 +86,7 @@ async function init() {
     let lastResult = null;
 
     const pack = data.pack;
+    const routeRules = pack.routeRules || {};
     document.title = (pack.gameTitle || 'YENDLE') + ' | Juego';
     const difficultyLabel = DIFICULTADES[options.difficulty]?.label || 'Turista';
     const label = (id) => names[canonicalId(id)] || displayName(id);
@@ -114,7 +121,9 @@ async function init() {
         options.isDaily ? 'Ruta diaria · ' + options.dateKey : 'Ruta aleatoria · ' + difficultyLabel,
         options.isDaily ? 'daily' : 'random'
       );
-      UI.setDailyModeActions(options.isDaily);
+      UI.setDailyModeActions(options.isDaily, {
+        disableNewRoute: !!routeRules.disableNewRoute
+      });
     }
 
     function syncStats() {
@@ -127,6 +136,10 @@ async function init() {
     }
 
     function startRandomRoute() {
+      if (routeRules.dailyOnly || routeRules.disableNewRoute) {
+        UI.showToast('Esta versión tiene una única ruta diaria. Mañana hay una nueva.', true);
+        return;
+      }
       options.isDaily = false;
       history.replaceState(null, '', 'yendle.html?p=' + encodeURIComponent(options.packId) + '&d=' + encodeURIComponent(options.difficulty));
       UI.showToast('Saliste de la ruta diaria. Ahora jugás una ruta aleatoria.');
@@ -134,6 +147,11 @@ async function init() {
     }
 
     function resetCurrentRoute() {
+      if (routeRules.disableRetry) {
+        UI.showToast('La ruta diaria no se puede reintentar. Mañana hay una nueva.', true);
+        return;
+      }
+
       const route = state.targetPath.slice();
       const graph = state.graph;
       state = {
@@ -251,10 +269,14 @@ async function init() {
           UI.startWinAnimation();
           UI.showEndGame({
             title: options.isDaily ? 'Ruta diaria completada' : 'Ruta completada',
-            message: options.isDaily
-              ? 'Compartí, reintentá la diaria o pasá a una ruta libre.'
-              : 'Compartí, reintentá esta ruta o pedí una nueva.',
-            tone: 'success'
+            message: routeRules.dailyOnly
+              ? 'Compartí tu resultado. Mañana hay una nueva ruta diaria.'
+              : options.isDaily
+                ? 'Compartí, reintentá la diaria o pasá a una ruta libre.'
+                : 'Compartí, reintentá esta ruta o pedí una nueva.',
+            tone: 'success',
+            canRetry: !routeRules.disableRetry,
+            canNewRoute: !routeRules.disableNewRoute
           });
         }
         return;
@@ -316,14 +338,22 @@ async function init() {
         UI.showStatus('Esta era la ruta correcta.', 'error');
         UI.showEndGame({
           title: 'Ruta revelada',
-          message: options.isDaily
-            ? 'Compartí el intento, reintentá la diaria o pasá a una ruta libre.'
-            : 'Compartí el intento, reintentá esta ruta o pedí una nueva.',
-          tone: 'error'
+          message: routeRules.dailyOnly
+            ? 'Mañana vas a tener una nueva ruta diaria para volver a intentar.'
+            : options.isDaily
+              ? 'Compartí el intento, reintentá la diaria o pasá a una ruta libre.'
+              : 'Compartí el intento, reintentá esta ruta o pedí una nueva.',
+          tone: 'error',
+          canRetry: !routeRules.disableRetry,
+          canNewRoute: !routeRules.disableNewRoute
         });
         playCue('giveup');
       },
       onNewRoute: () => {
+        if (routeRules.disableNewRoute) {
+          UI.showToast('Esta versión tiene una única ruta diaria. Mañana hay una nueva.', true);
+          return;
+        }
         if (options.isDaily) {
           startRandomRoute();
           return;

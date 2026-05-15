@@ -11,8 +11,12 @@ La versión estable actual incluye **YENDLE x CABA** y una arquitectura inicial 
 - Packs disponibles:
   - `caba-barrios`: barrios de la Ciudad de Buenos Aires.
   - `amba-partidos`: CABA + partidos del AMBA como unidades de juego.
+  - `gba-norte-partidos`: partidos del Gran Buenos Aires Norte, sin CABA.
+  - `gba-oeste-partidos`: partidos del Gran Buenos Aires Oeste, sin CABA.
+  - `gba-sur-partidos`: partidos del Gran Buenos Aires Sur, sin CABA.
 - Modo diario con semilla por fecha y pack.
-- Rutas aleatorias por dificultad.
+- Rutas aleatorias por dificultad en CABA y AMBA.
+- Packs GBA Norte/Oeste/Sur en modo diario único, sin nueva ruta ni reintento.
 - Estadísticas locales, racha, ranking local y compartir resultado.
 - Tutorial inicial, pistas, silueta y sonido opcional.
 
@@ -20,13 +24,17 @@ La versión estable actual incluye **YENDLE x CABA** y una arquitectura inicial 
 
 - **YENDLE x CABA**: barrios porteños.
 - **YENDLE x AMBA**: CABA y partidos del área metropolitana.
-- Futuro posible: **YENDLE x GBA**, **YENDLE x Comunas**, **YENDLE x Zona Norte**.
+- **YENDLE x GBA Norte**: partidos de zona norte por cordones, sin CABA.
+- **YENDLE x GBA Oeste**: partidos de zona oeste por cordones, sin CABA.
+- **YENDLE x GBA Sur**: partidos de zona sur por cordones, sin CABA.
+- Futuro posible: **YENDLE x Comunas**, **YENDLE diario por packs**.
 
-## Dificultades
+## Modos de juego
 
-- Turista: 1-2 unidades intermedias.
-- Vecino: 3 unidades intermedias.
-- Taxista: 4-5 unidades intermedias.
+- CABA y AMBA mantienen rutas aleatorias por dificultad: Turista, Vecino y Taxista.
+- GBA Norte, GBA Oeste y GBA Sur funcionan como juego diario: una sola ruta por fecha y pack.
+- En los packs GBA no se puede pedir nueva ruta ni reintentar la misma diaria.
+- La diaria busca rutas de 3 a 5 unidades intermedias cuando el grafo real de la zona lo permite; en zonas compactas usa la ruta más larga disponible para no inventar vecinos falsos.
 
 ## Estructura
 
@@ -38,6 +46,9 @@ web/
     packs/
       caba-barrios/
       amba-partidos/
+      gba-norte-partidos/
+      gba-oeste-partidos/
+      gba-sur-partidos/
   js/
     constants.js
     dataloader.js
@@ -65,6 +76,9 @@ Después abrí `http://localhost:4173`.
 - Home: `http://localhost:4173/index.html`
 - YENDLE x CABA: `http://localhost:4173/yendle.html?p=caba-barrios&d=facil`
 - YENDLE x AMBA: `http://localhost:4173/yendle.html?p=amba-partidos&d=facil`
+- YENDLE x GBA Norte: `http://localhost:4173/yendle.html?p=gba-norte-partidos&daily=1`
+- YENDLE x GBA Oeste: `http://localhost:4173/yendle.html?p=gba-oeste-partidos&daily=1`
+- YENDLE x GBA Sur: `http://localhost:4173/yendle.html?p=gba-sur-partidos&daily=1`
 
 ## Tests
 

@@ -154,7 +154,7 @@ export function setModeBadge(text, tone = 'random') {
   el.dataset.tone = tone;
 }
 
-export function setDailyModeActions(isDaily) {
+export function setDailyModeActions(isDaily, options = {}) {
   const label = isDaily ? 'Ruta libre' : 'Nueva Ruta';
   const title = isDaily
     ? 'Salir de la ruta diaria y jugar una ruta aleatoria'
@@ -163,9 +163,9 @@ export function setDailyModeActions(isDaily) {
   [selectors.endgameNewRouteBtn].forEach((selector) => {
     const button = get(selector);
     if (!button) return;
-    button.textContent = label;
-    button.title = title;
-    button.dataset.modeAction = isDaily ? 'free' : 'new';
+    button.textContent = options.disableNewRoute ? 'Nueva ruta diaria mañana' : label;
+    button.title = options.disableNewRoute ? 'Esta versión tiene una única ruta diaria' : title;
+    button.dataset.modeAction = options.disableNewRoute ? 'locked' : (isDaily ? 'free' : 'new');
   });
 }
 
@@ -222,11 +222,13 @@ export function triggerInputFeedback(type) {
   window.setTimeout(() => input.classList.remove('input-error', 'input-success'), type === 'success' ? 900 : 350);
 }
 
-export function showEndGame({ title, message, tone = 'success', canShare = true }) {
+export function showEndGame({ title, message, tone = 'success', canShare = true, canRetry = true, canNewRoute = true }) {
   const panel = get(selectors.endgamePanel);
   const titleEl = get(selectors.endgameTitle);
   const messageEl = get(selectors.endgameMessage);
   const shareBtn = get(selectors.shareResultBtn);
+  const retryBtn = get(selectors.retryRouteBtn);
+  const newRouteBtn = get(selectors.endgameNewRouteBtn);
 
   document.body.classList.add('game-finished');
   document.body.classList.toggle('game-won', tone === 'success');
@@ -240,13 +242,22 @@ export function showEndGame({ title, message, tone = 'success', canShare = true 
   if (titleEl) titleEl.textContent = title;
   if (messageEl) messageEl.textContent = message;
   if (shareBtn) shareBtn.hidden = !canShare;
+  if (retryBtn) retryBtn.hidden = !canRetry;
+  if (newRouteBtn) newRouteBtn.hidden = !canNewRoute;
 }
 
 export function clearEndGame() {
   const panel = get(selectors.endgamePanel);
+  const shareBtn = get(selectors.shareResultBtn);
+  const retryBtn = get(selectors.retryRouteBtn);
+  const newRouteBtn = get(selectors.endgameNewRouteBtn);
+
   document.body.classList.remove('game-finished', 'game-won', 'game-ended-error', 'won-game', 'gave-up');
   setRoundControlsDisabled(false);
   if (panel) panel.hidden = true;
+  if (shareBtn) shareBtn.hidden = false;
+  if (retryBtn) retryBtn.hidden = false;
+  if (newRouteBtn) newRouteBtn.hidden = false;
 }
 
 export function startWinAnimation() {

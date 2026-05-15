@@ -1,0 +1,48 @@
+{
+  "id": "gba-oeste-partidos",
+  "label": "GBA Oeste",
+  "shortLabel": "GBA Oeste",
+  "gameTitle": "YENDLE x GBA Oeste",
+  "regionLabel": "Partidos del Gran Buenos Aires Oeste",
+  "mapAriaLabel": "Mapa de partidos de GBA Oeste",
+  "unitSingular": "partido",
+  "unitPlural": "partidos",
+  "defaultDifficulty": "diaria",
+  "source": "Derivado de Georef Argentina - Departamentos de Buenos Aires. Selecciona partidos de GBA Oeste sin CABA.",
+  "zone": {
+    "id": "gba-oeste",
+    "label": "GBA Oeste",
+    "cordones": {
+      "primero": [
+        "la_matanza",
+        "moron",
+        "tres_de_febrero"
+      ],
+      "segundo": [
+        "hurlingham",
+        "ituzaingo",
+        "merlo",
+        "moreno"
+      ],
+      "tercero": [
+        "general_rodriguez",
+        "marcos_paz"
+      ]
+    }
+  },
+  "routeRules": {
+    "dailyOnly": true,
+    "disableNewRoute": true,
+    "disableRetry": true,
+    "availableDifficulties": [
+      "diaria"
+    ],
+    "difficultyRules": {
+      "diaria": {
+        "minIntermedios": 3,
+        "maxIntermedios": 5,
+        "fallbackToClosest": true
+      }
+    }
+  }
+}

@@ -16,8 +16,30 @@ export const DIFICULTADES = {
     label: 'Taxista',
     minIntermedios: 4,
     maxIntermedios: 5
+  },
+  diaria: {
+    id: 'diaria',
+    label: 'Diaria',
+    minIntermedios: 3,
+    maxIntermedios: 5
   }
 };
+
+function dailyOnlyRules() {
+  return {
+    dailyOnly: true,
+    disableNewRoute: true,
+    disableRetry: true,
+    availableDifficulties: ['diaria'],
+    difficultyRules: {
+      diaria: {
+        minIntermedios: 3,
+        maxIntermedios: 5,
+        fallbackToClosest: true
+      }
+    }
+  };
+}
 
 export const PACKS = {
   "caba-barrios": {
@@ -47,6 +69,45 @@ export const PACKS = {
       "blockedIntermediateIds": ["caba"],
       "excludedRouteIds": ["caba"]
     }
+  },
+  "gba-norte-partidos": {
+    "id": "gba-norte-partidos",
+    "label": "GBA Norte",
+    "shortLabel": "GBA Norte",
+    "gameTitle": "YENDLE x GBA Norte",
+    "regionLabel": "Partidos del Gran Buenos Aires Norte",
+    "mapAriaLabel": "Mapa de partidos de GBA Norte",
+    "unitSingular": "partido",
+    "unitPlural": "partidos",
+    "defaultDifficulty": "diaria",
+    "dataPath": "data/packs/gba-norte-partidos",
+    "routeRules": dailyOnlyRules()
+  },
+  "gba-oeste-partidos": {
+    "id": "gba-oeste-partidos",
+    "label": "GBA Oeste",
+    "shortLabel": "GBA Oeste",
+    "gameTitle": "YENDLE x GBA Oeste",
+    "regionLabel": "Partidos del Gran Buenos Aires Oeste",
+    "mapAriaLabel": "Mapa de partidos de GBA Oeste",
+    "unitSingular": "partido",
+    "unitPlural": "partidos",
+    "defaultDifficulty": "diaria",
+    "dataPath": "data/packs/gba-oeste-partidos",
+    "routeRules": dailyOnlyRules()
+  },
+  "gba-sur-partidos": {
+    "id": "gba-sur-partidos",
+    "label": "GBA Sur",
+    "shortLabel": "GBA Sur",
+    "gameTitle": "YENDLE x GBA Sur",
+    "regionLabel": "Partidos del Gran Buenos Aires Sur",
+    "mapAriaLabel": "Mapa de partidos de GBA Sur",
+    "unitSingular": "partido",
+    "unitPlural": "partidos",
+    "defaultDifficulty": "diaria",
+    "dataPath": "data/packs/gba-sur-partidos",
+    "routeRules": dailyOnlyRules()
   }
 };
 
@@ -57,4 +118,3 @@ export const HINTS_LIMIT = 3;
 export function resolvePackId(value) {
   return PACKS[value] ? value : DEFAULT_PACK;
 }
-

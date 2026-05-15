@@ -1,0 +1,596 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "packId": "gba-norte-partidos",
+    "ariaLabel": "Mapa de partidos de GBA Norte",
+    "source": "https://apis.datos.gob.ar/georef/api/v2.0/departamentos.geojson"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "escobar",
+        "name": "Escobar",
+        "displayName": "Escobar",
+        "sourceId": "06252",
+        "sourceName": "Escobar",
+        "cordon": "tercero cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.712152,
+              -34.248902
+            ],
+            [
+              -58.649515,
+              -34.266598
+            ],
+            [
+              -58.680813,
+              -34.347213
+            ],
+            [
+              -58.720619,
+              -34.36329
+            ],
+            [
+              -58.705329,
+              -34.372973
+            ],
+            [
+              -58.734634,
+              -34.40246
+            ],
+            [
+              -58.70561,
+              -34.439337
+            ],
+            [
+              -58.737313,
+              -34.456416
+            ],
+            [
+              -58.777666,
+              -34.404272
+            ],
+            [
+              -58.816989,
+              -34.415404
+            ],
+            [
+              -58.900643,
+              -34.308488
+            ],
+            [
+              -58.858387,
+              -34.261979
+            ],
+            [
+              -58.776382,
+              -34.285744
+            ],
+            [
+              -58.798512,
+              -34.230221
+            ],
+            [
+              -58.712152,
+              -34.248902
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "jose_c_paz",
+        "name": "José C. Paz",
+        "displayName": "José C. Paz",
+        "sourceId": "06412",
+        "sourceName": "José C. Paz",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.78948,
+              -34.473851
+            ],
+            [
+              -58.720899,
+              -34.518234
+            ],
+            [
+              -58.776028,
+              -34.557058
+            ],
+            [
+              -58.823584,
+              -34.508215
+            ],
+            [
+              -58.811153,
+              -34.485744
+            ],
+            [
+              -58.821687,
+              -34.451956
+            ],
+            [
+              -58.78948,
+              -34.473851
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "malvinas_argentinas",
+        "name": "Malvinas Argentinas",
+        "displayName": "Malvinas Argentinas",
+        "sourceId": "06515",
+        "sourceName": "Malvinas Argentinas",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.684803,
+              -34.466151
+            ],
+            [
+              -58.646591,
+              -34.501384
+            ],
+            [
+              -58.701269,
+              -34.532748
+            ],
+            [
+              -58.784541,
+              -34.476066
+            ],
+            [
+              -58.705563,
+              -34.439311
+            ],
+            [
+              -58.684803,
+              -34.466151
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "pilar",
+        "name": "Pilar",
+        "displayName": "Pilar",
+        "sourceId": "06638",
+        "sourceName": "Pilar",
+        "cordon": "tercero cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.901265,
+              -34.311097
+            ],
+            [
+              -58.816989,
+              -34.415404
+            ],
+            [
+              -58.777666,
+              -34.404272
+            ],
+            [
+              -58.737313,
+              -34.456416
+            ],
+            [
+              -58.784689,
+              -34.476157
+            ],
+            [
+              -58.821687,
+              -34.451956
+            ],
+            [
+              -58.813519,
+              -34.491148
+            ],
+            [
+              -58.847501,
+              -34.549171
+            ],
+            [
+              -58.885066,
+              -34.577051
+            ],
+            [
+              -58.92842,
+              -34.516204
+            ],
+            [
+              -58.96189,
+              -34.533741
+            ],
+            [
+              -59.056272,
+              -34.428206
+            ],
+            [
+              -58.992981,
+              -34.379286
+            ],
+            [
+              -58.984011,
+              -34.369004
+            ],
+            [
+              -58.993226,
+              -34.358077
+            ],
+            [
+              -58.980257,
+              -34.350643
+            ],
+            [
+              -58.919672,
+              -34.414768
+            ],
+            [
+              -58.921214,
+              -34.371547
+            ],
+            [
+              -58.907739,
+              -34.359949
+            ],
+            [
+              -58.917353,
+              -34.328004
+            ],
+            [
+              -58.901265,
+              -34.311097
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "san_fernando",
+        "name": "San Fernando",
+        "displayName": "San Fernando",
+        "sourceId": "06749",
+        "sourceName": "San Fernando - sector continental",
+        "deltaIslandsRemoved": true,
+        "note": "Se omiten islas del Delta para el mapa jugable AMBA.",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.54505,
+              -34.430729
+            ],
+            [
+              -58.516165,
+              -34.443321
+            ],
+            [
+              -58.600303,
+              -34.490354
+            ],
+            [
+              -58.595171,
+              -34.448343
+            ],
+            [
+              -58.557947,
+              -34.424092
+            ],
+            [
+              -58.54505,
+              -34.430729
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "san_isidro",
+        "name": "San Isidro",
+        "displayName": "San Isidro",
+        "sourceId": "06756",
+        "sourceName": "San Isidro",
+        "cordon": "primero cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.514155,
+              -34.443526
+            ],
+            [
+              -58.4794,
+              -34.489761
+            ],
+            [
+              -58.553764,
+              -34.530205
+            ],
+            [
+              -58.600303,
+              -34.490354
+            ],
+            [
+              -58.514155,
+              -34.443526
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "san_martin",
+        "name": "San Martín",
+        "displayName": "San Martín",
+        "sourceId": "06371",
+        "sourceName": "General San Martín",
+        "cordon": "primero cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.553764,
+              -34.530205
+            ],
+            [
+              -58.537781,
+              -34.544164
+            ],
+            [
+              -58.529811,
+              -34.537332
+            ],
+            [
+              -58.50996,
+              -34.569205
+            ],
+            [
+              -58.522972,
+              -34.597563
+            ],
+            [
+              -58.562314,
+              -34.591405
+            ],
+            [
+              -58.619241,
+              -34.54673
+            ],
+            [
+              -58.601517,
+              -34.521241
+            ],
+            [
+              -58.600303,
+              -34.490354
+            ],
+            [
+              -58.553764,
+              -34.530205
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "san_miguel",
+        "name": "San Miguel",
+        "displayName": "San Miguel",
+        "sourceId": "06760",
+        "sourceName": "San Miguel",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.612095,
+              -34.52986
+            ],
+            [
+              -58.617681,
+              -34.546904
+            ],
+            [
+              -58.713374,
+              -34.605638
+            ],
+            [
+              -58.77694,
+              -34.557917
+            ],
+            [
+              -58.720899,
+              -34.518234
+            ],
+            [
+              -58.689134,
+              -34.530159
+            ],
+            [
+              -58.646591,
+              -34.501384
+            ],
+            [
+              -58.612095,
+              -34.52986
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tigre",
+        "name": "Tigre",
+        "displayName": "Tigre",
+        "sourceId": "06805",
+        "sourceName": "Tigre",
+        "cordon": "segundo cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.472022,
+              -34.32351
+            ],
+            [
+              -58.436937,
+              -34.300883
+            ],
+            [
+              -58.44139,
+              -34.386659
+            ],
+            [
+              -58.489199,
+              -34.44407
+            ],
+            [
+              -58.523514,
+              -34.443781
+            ],
+            [
+              -58.557947,
+              -34.424092
+            ],
+            [
+              -58.595171,
+              -34.448343
+            ],
+            [
+              -58.606343,
+              -34.534542
+            ],
+            [
+              -58.67821,
+              -34.474651
+            ],
+            [
+              -58.734634,
+              -34.40246
+            ],
+            [
+              -58.705329,
+              -34.372973
+            ],
+            [
+              -58.720619,
+              -34.36329
+            ],
+            [
+              -58.679814,
+              -34.345687
+            ],
+            [
+              -58.649515,
+              -34.266598
+            ],
+            [
+              -58.472022,
+              -34.32351
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "vicente_lopez",
+        "name": "Vicente López",
+        "displayName": "Vicente López",
+        "sourceId": "06861",
+        "sourceName": "Vicente López",
+        "cordon": "primero cordon"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.479285,
+              -34.494397
+            ],
+            [
+              -58.459564,
+              -34.527784
+            ],
+            [
+              -58.500804,
+              -34.549533
+            ],
+            [
+              -58.50996,
+              -34.569205
+            ],
+            [
+              -58.529811,
+              -34.537332
+            ],
+            [
+              -58.537781,
+              -34.544164
+            ],
+            [
+              -58.553764,
+              -34.530205
+            ],
+            [
+              -58.479285,
+              -34.494397
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

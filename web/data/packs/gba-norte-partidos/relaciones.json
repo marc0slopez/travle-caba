@@ -1,0 +1,58 @@
+{
+  "escobar": [
+    "malvinas_argentinas",
+    "pilar",
+    "tigre"
+  ],
+  "jose_c_paz": [
+    "malvinas_argentinas",
+    "pilar",
+    "san_miguel"
+  ],
+  "malvinas_argentinas": [
+    "escobar",
+    "jose_c_paz",
+    "pilar",
+    "san_martin",
+    "san_miguel",
+    "tigre"
+  ],
+  "pilar": [
+    "escobar",
+    "jose_c_paz",
+    "malvinas_argentinas",
+    "tigre"
+  ],
+  "san_fernando": [
+    "san_isidro",
+    "tigre"
+  ],
+  "san_isidro": [
+    "san_fernando",
+    "san_martin",
+    "tigre",
+    "vicente_lopez"
+  ],
+  "san_martin": [
+    "malvinas_argentinas",
+    "san_isidro",
+    "san_miguel",
+    "vicente_lopez"
+  ],
+  "san_miguel": [
+    "jose_c_paz",
+    "malvinas_argentinas",
+    "san_martin"
+  ],
+  "tigre": [
+    "escobar",
+    "malvinas_argentinas",
+    "pilar",
+    "san_fernando",
+    "san_isidro"
+  ],
+  "vicente_lopez": [
+    "san_isidro",
+    "san_martin"
+  ]
+}

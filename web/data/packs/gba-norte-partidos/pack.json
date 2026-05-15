@@ -1,0 +1,49 @@
+{
+  "id": "gba-norte-partidos",
+  "label": "GBA Norte",
+  "shortLabel": "GBA Norte",
+  "gameTitle": "YENDLE x GBA Norte",
+  "regionLabel": "Partidos del Gran Buenos Aires Norte",
+  "mapAriaLabel": "Mapa de partidos de GBA Norte",
+  "unitSingular": "partido",
+  "unitPlural": "partidos",
+  "defaultDifficulty": "diaria",
+  "source": "Derivado de Georef Argentina - Departamentos de Buenos Aires. Selecciona partidos de GBA Norte sin CABA.",
+  "zone": {
+    "id": "gba-norte",
+    "label": "GBA Norte",
+    "cordones": {
+      "primero": [
+        "san_martin",
+        "san_isidro",
+        "vicente_lopez"
+      ],
+      "segundo": [
+        "san_miguel",
+        "jose_c_paz",
+        "malvinas_argentinas",
+        "san_fernando",
+        "tigre"
+      ],
+      "tercero": [
+        "escobar",
+        "pilar"
+      ]
+    }
+  },
+  "routeRules": {
+    "dailyOnly": true,
+    "disableNewRoute": true,
+    "disableRetry": true,
+    "availableDifficulties": [
+      "diaria"
+    ],
+    "difficultyRules": {
+      "diaria": {
+        "minIntermedios": 3,
+        "maxIntermedios": 5,
+        "fallbackToClosest": true
+      }
+    }
+  }
+}

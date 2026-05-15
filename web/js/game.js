@@ -245,23 +245,40 @@ export function shortestPath(graph, start, end, options = {}) {
 }
 
 export function routesForDifficulty(graph, difficulty = DEFAULT_DIFFICULTY, options = {}) {
-  const rule = DIFICULTADES[difficulty] || DIFICULTADES[DEFAULT_DIFFICULTY];
+  const rule = options.difficultyRules?.[difficulty] || DIFICULTADES[difficulty] || DIFICULTADES[DEFAULT_DIFFICULTY];
   const excluded = excludedRouteSet(options);
   const nodes = Array.from(graph.keys()).filter((node) => !excluded.has(node));
   const routes = [];
+  const fallbackRoutes = [];
+  let bestFallbackScore = Infinity;
 
   for (let i = 0; i < nodes.length; i += 1) {
     for (let j = i + 1; j < nodes.length; j += 1) {
       const path = shortestPath(graph, nodes[i], nodes[j], options);
       if (!path) continue;
+
       const intermedios = path.length - 2;
+      if (intermedios <= 0) continue;
+
       if (intermedios >= rule.minIntermedios && intermedios <= rule.maxIntermedios) {
         routes.push(path);
+        continue;
+      }
+
+      if (rule.fallbackToClosest) {
+        const score = intermedios < rule.minIntermedios
+          ? rule.minIntermedios - intermedios
+          : intermedios - rule.maxIntermedios;
+        if (score < bestFallbackScore) {
+          bestFallbackScore = score;
+          fallbackRoutes.length = 0;
+        }
+        if (score === bestFallbackScore) fallbackRoutes.push(path);
       }
     }
   }
 
-  return routes;
+  return routes.length || !rule.fallbackToClosest ? routes : fallbackRoutes;
 }
 
 export function createGame(relaciones, difficulty = DEFAULT_DIFFICULTY, random = Math.random, options = {}) {
@@ -269,7 +286,8 @@ export function createGame(relaciones, difficulty = DEFAULT_DIFFICULTY, random =
   const routeOptions = {
     blockedIntermediateIds: options.blockedIntermediateIds || options.routeRules?.blockedIntermediateIds || [],
     excludedRouteIds: options.excludedRouteIds || options.routeRules?.excludedRouteIds || [],
-    routeWeights: options.routeWeights || buildRouteWeights(relaciones, options.geojson)
+    routeWeights: options.routeWeights || buildRouteWeights(relaciones, options.geojson),
+    difficultyRules: options.difficultyRules || options.routeRules?.difficultyRules || null
   };
   const routes = routesForDifficulty(graph, difficulty, routeOptions);
   if (!routes.length) {

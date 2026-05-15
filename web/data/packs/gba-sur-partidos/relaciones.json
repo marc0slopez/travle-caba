@@ -1,0 +1,58 @@
+{
+  "almirante_brown": [
+    "esteban_echeverria",
+    "florencio_varela",
+    "lomas_de_zamora",
+    "presidente_peron",
+    "quilmes"
+  ],
+  "avellaneda": [
+    "lanus",
+    "quilmes"
+  ],
+  "berazategui": [
+    "florencio_varela",
+    "quilmes"
+  ],
+  "esteban_echeverria": [
+    "almirante_brown",
+    "ezeiza",
+    "lomas_de_zamora",
+    "presidente_peron"
+  ],
+  "ezeiza": [
+    "esteban_echeverria",
+    "presidente_peron"
+  ],
+  "florencio_varela": [
+    "almirante_brown",
+    "berazategui",
+    "presidente_peron",
+    "quilmes"
+  ],
+  "lanus": [
+    "avellaneda",
+    "lomas_de_zamora",
+    "quilmes"
+  ],
+  "lomas_de_zamora": [
+    "almirante_brown",
+    "esteban_echeverria",
+    "lanus",
+    "quilmes"
+  ],
+  "presidente_peron": [
+    "almirante_brown",
+    "esteban_echeverria",
+    "ezeiza",
+    "florencio_varela"
+  ],
+  "quilmes": [
+    "almirante_brown",
+    "avellaneda",
+    "berazategui",
+    "florencio_varela",
+    "lanus",
+    "lomas_de_zamora"
+  ]
+}

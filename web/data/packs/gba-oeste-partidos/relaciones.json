@@ -1,0 +1,54 @@
+{
+  "general_rodriguez": [
+    "marcos_paz",
+    "merlo",
+    "moreno"
+  ],
+  "hurlingham": [
+    "ituzaingo",
+    "moron",
+    "tres_de_febrero"
+  ],
+  "ituzaingo": [
+    "hurlingham",
+    "merlo",
+    "moreno",
+    "moron"
+  ],
+  "la_matanza": [
+    "marcos_paz",
+    "merlo",
+    "moron",
+    "tres_de_febrero"
+  ],
+  "marcos_paz": [
+    "general_rodriguez",
+    "la_matanza",
+    "merlo"
+  ],
+  "merlo": [
+    "general_rodriguez",
+    "ituzaingo",
+    "la_matanza",
+    "marcos_paz",
+    "moreno",
+    "moron"
+  ],
+  "moreno": [
+    "general_rodriguez",
+    "ituzaingo",
+    "merlo"
+  ],
+  "moron": [
+    "hurlingham",
+    "ituzaingo",
+    "la_matanza",
+    "merlo",
+    "tres_de_febrero"
+  ],
+  "tres_de_febrero": [
+    "hurlingham",
+    "la_matanza",
+    "moron"
+  ]
+}
