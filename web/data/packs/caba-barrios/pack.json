@@ -1,12 +1,12 @@
 {
-  "id": "caba-barrios",
-  "label": "CABA Barrios",
-  "shortLabel": "CABA",
-  "gameTitle": "YENDLE x CABA",
-  "regionLabel": "Barrios de Buenos Aires",
-  "mapAriaLabel": "Mapa de barrios de CABA",
-  "unitSingular": "barrio",
-  "unitPlural": "barrios",
-  "defaultDifficulty": "facil",
-  "source": "BA Data - Barrios CABA"
+    "id":  "caba-barrios",
+    "label":  "CABA Barrios",
+    "shortLabel":  "CABA",
+    "gameTitle":  "YENDLE x CABA",
+    "regionLabel":  "Barrios de Buenos Aires",
+    "mapAriaLabel":  "Mapa de barrios de CABA",
+    "unitSingular":  "barrio",
+    "unitPlural":  "barrios",
+    "defaultDifficulty":  "diaria",
+    "source":  "BA Data - Barrios CABA"
 }

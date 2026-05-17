@@ -1,0 +1,28 @@
+{
+  "id": "gba-partidos",
+  "label": "GBA Partidos",
+  "shortLabel": "GBA",
+  "gameTitle": "YENDLE x GBA",
+  "regionLabel": "Partidos del Gran Buenos Aires",
+  "mapAriaLabel": "Mapa de partidos del Gran Buenos Aires sin CABA",
+  "unitSingular": "partido",
+  "unitPlural": "partidos",
+  "defaultDifficulty": "diaria",
+  "dataPath": "data/packs/gba-partidos",
+  "source": "Derivado de Georef Argentina - Departamentos de Buenos Aires. Incluye los 24 partidos del Gran Buenos Aires en sentido administrativo y excluye CABA.",
+  "routeRules": {
+    "dailyOnly": true,
+    "disableNewRoute": true,
+    "disableRetry": true,
+    "availableDifficulties": [
+      "diaria"
+    ],
+    "difficultyRules": {
+      "diaria": {
+        "minIntermedios": 3,
+        "maxIntermedios": 6,
+        "fallbackToClosest": true
+      }
+    }
+  }
+}

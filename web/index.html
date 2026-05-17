@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 
 <head>
@@ -312,9 +312,6 @@
       font-weight: 800;
     }
 
-    .map-option[data-pack="gba-sur-partidos"] {
-      grid-column: 1 / -1;
-    }
 
     .map-option.is-active,
     .map-option:hover,
@@ -515,28 +512,11 @@
       <p class="eyebrow">Mapa</p>
       <div class="map-options" role="group" aria-label="Elegir mapa">
         <button class="map-option is-active" type="button" data-pack="caba-barrios">CABA Barrios</button>
-        <button class="map-option" type="button" data-pack="amba-partidos">AMBA Partidos</button>
-        <button class="map-option" type="button" data-pack="gba-norte-partidos">GBA Norte</button>
-        <button class="map-option" type="button" data-pack="gba-oeste-partidos">GBA Oeste</button>
-        <button class="map-option" type="button" data-pack="gba-sur-partidos">GBA Sur</button>
+        <button class="map-option" type="button" data-pack="gba-partidos">GBA Partidos</button>
       </div>
       <button id="daily-route-btn" class="daily-option" type="button">
         <span><strong>Ruta diaria</strong><span>Misma ruta para todos en tu mapa</span></span>
         <span class="pro-pill">PRO</span>
-      </button>
-      <div id="random-divider" class="panel-divider"></div>
-      <p id="random-heading" class="eyebrow">Rutas aleatorias por dificultad</p>
-      <button class="option" type="button" data-level="facil">
-        <span><strong>Turista</strong><span>1-2 barrios intermedios</span></span>
-        <span class="stars">&#9733;&#9734;&#9734;</span>
-      </button>
-      <button class="option" type="button" data-level="medio">
-        <span><strong>Vecino</strong><span>3 barrios intermedios</span></span>
-        <span class="stars">&#9733;&#9733;&#9734;</span>
-      </button>
-      <button class="option" type="button" data-level="dificil">
-        <span><strong>Taxista</strong><span>4-5 barrios intermedios</span></span>
-        <span class="stars">&#9733;&#9733;&#9733;</span>
       </button>
     </section>
   </main>
@@ -621,7 +601,7 @@
         'data/images/caba/teatro colon.png',
         'data/images/caba/vino.png'
       ],
-      'amba-partidos': [
+      'gba-partidos': [
         'data/images/amba/bandera.png',
         'data/images/amba/bondi 8 bit.png',
         'data/images/amba/cartonero 8 bit.png',
@@ -631,7 +611,7 @@
         'data/images/amba/empanada.png',
         'data/images/amba/fernet gba 8 bit.png',
         'data/images/amba/mate.png',
-        'data/images/amba/señora tortilla 8 bit.png',
+        'data/images/amba/seÃ±ora tortilla 8 bit.png',
         'data/images/amba/vino con jugo 8bit.png'
       ]
     };
@@ -674,7 +654,7 @@
 
     function renderSpritesForPack(packId, force = false) {
       if (!spriteField) return;
-      const assets = spriteAssets[packId] || (packId.startsWith('gba-') ? spriteAssets['amba-partidos'] : spriteAssets['caba-barrios']);
+      const assets = spriteAssets[packId] || (packId === 'gba-partidos' ? spriteAssets['gba-partidos'] : spriteAssets['caba-barrios']);
       const compact = window.matchMedia('(max-width: 860px)').matches;
       const maxSprites = compact ? 6 : 8;
 
@@ -748,45 +728,16 @@
       'caba-barrios': {
         short: 'CABA',
         title: 'YENDLE x CABA',
-        daily: 'Misma ruta para todos en CABA',
-        levels: {
-          facil: '1-2 barrios intermedios',
-          medio: '3 barrios intermedios',
-          dificil: '4-5 barrios intermedios'
-        }
-      },
-      'amba-partidos': {
-        short: 'AMBA',
-        title: 'YENDLE x AMBA',
-        daily: 'Misma ruta para todos en AMBA',
-        levels: {
-          facil: '1-2 partidos intermedios',
-          medio: '3 partidos intermedios',
-          dificil: '4-5 partidos intermedios'
-        }
-      },
-      'gba-norte-partidos': {
-        short: 'GBA Norte',
-        title: 'YENDLE x GBA Norte',
-        daily: 'Ruta diaria única para GBA Norte',
+        daily: 'Ruta diaria Ãºnica para CABA',
         dailyOnly: true,
         availableDifficulties: ['diaria'],
         defaultDifficulty: 'diaria',
         levels: {}
       },
-      'gba-oeste-partidos': {
-        short: 'GBA Oeste',
-        title: 'YENDLE x GBA Oeste',
-        daily: 'Ruta diaria única para GBA Oeste',
-        dailyOnly: true,
-        availableDifficulties: ['diaria'],
-        defaultDifficulty: 'diaria',
-        levels: {}
-      },
-      'gba-sur-partidos': {
-        short: 'GBA Sur',
-        title: 'YENDLE x GBA Sur',
-        daily: 'Ruta diaria única para GBA Sur',
+      'gba-partidos': {
+        short: 'GBA',
+        title: 'YENDLE x GBA',
+        daily: 'Ruta diaria Ãºnica para GBA',
         dailyOnly: true,
         availableDifficulties: ['diaria'],
         defaultDifficulty: 'diaria',
@@ -794,22 +745,26 @@
       }
     };
 
-    let selectedPack = localStorage.getItem('yendle_pack') || localStorage.getItem('travle_pack') || 'caba-barrios';
-    if (!['caba-barrios', 'amba-partidos', 'gba-norte-partidos', 'gba-oeste-partidos', 'gba-sur-partidos'].includes(selectedPack)) selectedPack = 'caba-barrios';
+    const homePackAliases = {
+      'amba-partidos': 'gba-partidos',
+      'gba-norte-partidos': 'gba-partidos',
+      'gba-oeste-partidos': 'gba-partidos',
+    function resolveHomePack(value) {
+      const id = homePackAliases[value] || value;
+      return homePackMeta[id] ? id : 'caba-barrios';
+    }
+
+    let selectedPack = resolveHomePack(localStorage.getItem('yendle_pack') || localStorage.getItem('travle_pack') || 'caba-barrios');
 
     function syncPackButtons() {
       const meta = homePackMeta[selectedPack] || homePackMeta['caba-barrios'];
       const regionLabel = document.getElementById('home-region-label');
       const dailyCopy = document.querySelector('#daily-route-btn span span');
-      const randomDivider = document.getElementById('random-divider');
-      const randomHeading = document.getElementById('random-heading');
       const dailyOnly = !!meta.dailyOnly;
 
       document.title = meta.title;
       if (regionLabel) regionLabel.textContent = 'x ' + meta.short;
       if (dailyCopy) dailyCopy.textContent = meta.daily;
-      if (randomDivider) randomDivider.hidden = dailyOnly;
-      if (randomHeading) randomHeading.hidden = dailyOnly;
       renderSpritesForPack(selectedPack);
 
       for (const button of document.querySelectorAll('.map-option')) {
@@ -828,7 +783,7 @@
 
     for (const button of document.querySelectorAll('.map-option')) {
       button.addEventListener('click', () => {
-        selectedPack = button.dataset.pack || 'caba-barrios';
+        selectedPack = resolveHomePack(button.dataset.pack || 'caba-barrios');
         localStorage.setItem('yendle_pack', selectedPack);
         syncPackButtons();
       });
@@ -839,11 +794,11 @@
     dailyButton?.addEventListener('click', () => {
       const meta = homePackMeta[selectedPack] || homePackMeta['caba-barrios'];
       const allowed = meta.availableDifficulties || ['facil', 'medio', 'dificil'];
-      const storedLevel = localStorage.getItem('yendle_dificultad') || localStorage.getItem('travle_dificultad') || meta.defaultDifficulty || (selectedPack === 'amba-partidos' ? 'medio' : 'facil');
+      const storedLevel = localStorage.getItem('yendle_dificultad') || localStorage.getItem('travle_dificultad') || meta.defaultDifficulty || 'diaria';
       const level = allowed.includes(storedLevel) ? storedLevel : (meta.defaultDifficulty || allowed[0] || 'facil');
       localStorage.setItem('yendle_dificultad', level);
       localStorage.setItem('yendle_pack', selectedPack);
-      const query = 'p=' + encodeURIComponent(selectedPack) + (meta.dailyOnly ? '' : '&d=' + encodeURIComponent(level)) + '&daily=1';
+      const query = 'p=' + encodeURIComponent(selectedPack) + '&daily=1';
       location.href = 'yendle.html?' + query;
     });
 

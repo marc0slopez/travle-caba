@@ -12,6 +12,7 @@ import {
   validateGuess
 } from '../web/js/game.js';
 
+import { DEFAULT_DIFFICULTY, DIFICULTADES, PACKS, resolvePackId } from '../web/js/constants.js';
 import { seededRandom } from '../web/js/pro.js';
 import { loadAllData } from '../web/js/dataloader.js';
 
@@ -33,6 +34,11 @@ assert.deepEqual(shortestPath(graph, 'barrio_a', 'barrio_d'), [
 
 assert.equal(canonicalId('La Boca'), 'boca');
 assert.equal(canonicalId('Villa General Mitre'), 'villa_gral_mitre');
+assert.equal(DEFAULT_DIFFICULTY, 'diaria');
+assert.equal(DIFICULTADES.diaria.maxIntermedios, 6);
+assert.equal(resolvePackId('amba-partidos'), 'gba-partidos');
+assert.equal(resolvePackId('gba-norte-partidos'), 'gba-partidos');
+assert.deepEqual(Object.keys(PACKS).sort(), ['caba-barrios', 'gba-partidos']);
 
 const state = {
   graph,
@@ -75,126 +81,98 @@ assert.equal(hintState.usedHintCount, 1);
 
 const cabaPack = await loadAllData('caba-barrios');
 assert.equal(cabaPack.pack.id, 'caba-barrios');
+assert.equal(cabaPack.pack.routeRules.dailyOnly, true);
+assert.equal(cabaPack.pack.routeRules.disableNewRoute, true);
+assert.equal(cabaPack.pack.routeRules.disableRetry, true);
 assert.ok(cabaPack.barrios.features.length >= 48);
 assert.ok(Object.keys(cabaPack.relaciones).length >= 48);
 
-const ambaPack = await loadAllData('amba-partidos');
-assert.equal(ambaPack.pack.id, 'amba-partidos');
-assert.ok(ambaPack.barrios.features.length >= 30);
-assert.ok(Object.keys(ambaPack.relaciones).includes('caba'));
-assert.deepEqual(ambaPack.pack.routeRules.blockedIntermediateIds, ['caba']);
-assert.deepEqual(ambaPack.pack.routeRules.excludedRouteIds, ['caba']);
-assert.ok(ambaPack.pack.decorativeRegions.caba.images[0].startsWith('data:image/png;base64,'));
-assert.equal(ambaPack.pistas.san_fernando.length, 3);
-assert.equal(ambaPack.pistas.avellaneda.length, 3);
-const sanFernandoFeature = ambaPack.barrios.features.find((feature) => feature.properties.id === 'san_fernando');
-assert.equal(sanFernandoFeature.geometry.type, 'Polygon');
-assert.equal(sanFernandoFeature.properties.deltaIslandsRemoved, true);
-
-const ambaGraph = buildGraph(ambaPack.relaciones);
-const ambaRouteOptions = {
-  blockedIntermediateIds: ambaPack.pack.routeRules.blockedIntermediateIds,
-  excludedRouteIds: ambaPack.pack.routeRules.excludedRouteIds,
-  routeWeights: buildRouteWeights(ambaPack.relaciones, ambaPack.barrios)
+const cabaGraph = buildGraph(cabaPack.relaciones);
+const cabaRouteOptions = {
+  difficultyRules: cabaPack.pack.routeRules.difficultyRules,
+  routeWeights: buildRouteWeights(cabaPack.relaciones, cabaPack.barrios)
 };
-const sanFernandoCanuelas = shortestPath(ambaGraph, 'san_fernando', 'canuelas', ambaRouteOptions);
-assert.ok(sanFernandoCanuelas);
-assert.equal(sanFernandoCanuelas.includes('caba'), false);
-const ezeizaTigre = shortestPath(ambaGraph, 'ezeiza', 'tigre', ambaRouteOptions);
-assert.ok(ezeizaTigre);
-assert.equal(ezeizaTigre.includes('caba'), false);
-assert.notDeepEqual(ezeizaTigre, ['ezeiza', 'canuelas', 'marcos_paz', 'general_rodriguez', 'pilar', 'tigre']);
+const cabaRoutes = routesForDifficulty(cabaGraph, 'diaria', cabaRouteOptions);
+assert.ok(cabaRoutes.length > 0);
+assert.ok(cabaRoutes.every((route) => route.length - 2 >= 3 && route.length - 2 <= 6));
+const cabaDailyA = createGame(cabaPack.relaciones, 'diaria', seededRandom('caba:daily'), {
+  routeRules: cabaPack.pack.routeRules,
+  geojson: cabaPack.barrios,
+  unitSingular: cabaPack.pack.unitSingular,
+  mapLabel: cabaPack.pack.label
+});
+const cabaDailyB = createGame(cabaPack.relaciones, 'diaria', seededRandom('caba:daily'), {
+  routeRules: cabaPack.pack.routeRules,
+  geojson: cabaPack.barrios,
+  unitSingular: cabaPack.pack.unitSingular,
+  mapLabel: cabaPack.pack.label
+});
+assert.deepEqual(cabaDailyA.targetPath, cabaDailyB.targetPath);
 
-for (let i = 0; i < 40; i += 1) {
-  const ambaGame = createGame(ambaPack.relaciones, 'facil', seededRandom('amba-caba-hidden-' + i), {
-    routeRules: ambaPack.pack.routeRules,
-    geojson: ambaPack.barrios,
-    unitSingular: ambaPack.pack.unitSingular,
-    mapLabel: ambaPack.pack.label
-  });
-  assert.equal(ambaGame.targetPath.includes('caba'), false);
-  assert.equal(validateGuess(ambaGame, 'CABA').type, 'invalid');
+const gbaPack = await loadAllData('gba-partidos');
+assert.equal(gbaPack.pack.id, 'gba-partidos');
+assert.equal(gbaPack.pack.shortLabel, 'GBA');
+assert.equal(gbaPack.pack.routeRules.dailyOnly, true);
+assert.equal(gbaPack.pack.routeRules.disableNewRoute, true);
+assert.equal(gbaPack.pack.routeRules.disableRetry, true);
+assert.equal(gbaPack.barrios.features.length, 24);
+assert.equal(Object.keys(gbaPack.relaciones).includes('caba'), false);
+assert.equal(gbaPack.barrios.features.some((feature) => feature.properties.id === 'caba'), false);
+
+const expectedGbaIds = [
+  'almirante_brown',
+  'avellaneda',
+  'berazategui',
+  'esteban_echeverria',
+  'ezeiza',
+  'florencio_varela',
+  'hurlingham',
+  'ituzaingo',
+  'jose_c_paz',
+  'la_matanza',
+  'lanus',
+  'lomas_de_zamora',
+  'malvinas_argentinas',
+  'merlo',
+  'moreno',
+  'moron',
+  'quilmes',
+  'san_fernando',
+  'san_isidro',
+  'san_martin',
+  'san_miguel',
+  'tigre',
+  'tres_de_febrero',
+  'vicente_lopez'
+];
+assert.deepEqual(gbaPack.barrios.features.map((feature) => feature.properties.id).sort(), expectedGbaIds);
+for (const neighbors of Object.values(gbaPack.relaciones)) {
+  assert.equal(neighbors.includes('caba'), false);
+  assert.ok(neighbors.every((neighbor) => expectedGbaIds.includes(neighbor)));
 }
 
-const expectedGbaZoneIds = {
-  'gba-norte-partidos': [
-    'escobar',
-    'jose_c_paz',
-    'malvinas_argentinas',
-    'pilar',
-    'san_fernando',
-    'san_isidro',
-    'san_martin',
-    'san_miguel',
-    'tigre',
-    'vicente_lopez'
-  ],
-  'gba-oeste-partidos': [
-    'general_rodriguez',
-    'hurlingham',
-    'ituzaingo',
-    'la_matanza',
-    'marcos_paz',
-    'merlo',
-    'moreno',
-    'moron',
-    'tres_de_febrero'
-  ],
-  'gba-sur-partidos': [
-    'almirante_brown',
-    'avellaneda',
-    'berazategui',
-    'esteban_echeverria',
-    'ezeiza',
-    'florencio_varela',
-    'lanus',
-    'lomas_de_zamora',
-    'presidente_peron',
-    'quilmes'
-  ]
+const gbaGraph = buildGraph(gbaPack.relaciones);
+const gbaRouteOptions = {
+  difficultyRules: gbaPack.pack.routeRules.difficultyRules,
+  routeWeights: buildRouteWeights(gbaPack.relaciones, gbaPack.barrios)
 };
-
-for (const [packId, expectedIds] of Object.entries(expectedGbaZoneIds)) {
-  const zonePack = await loadAllData(packId);
-  assert.equal(zonePack.pack.id, packId);
-  assert.equal(zonePack.barrios.features.length, expectedIds.length);
-  assert.deepEqual(zonePack.barrios.features.map((feature) => feature.properties.id).sort(), expectedIds);
-  assert.equal(Object.keys(zonePack.relaciones).includes('caba'), false);
-  assert.equal(zonePack.pack.defaultDifficulty, 'diaria');
-  assert.equal(zonePack.pack.routeRules.dailyOnly, true);
-  assert.equal(zonePack.pack.routeRules.disableNewRoute, true);
-  assert.equal(zonePack.pack.routeRules.disableRetry, true);
-  assert.deepEqual(zonePack.pack.routeRules.availableDifficulties, ['diaria']);
-  for (const neighbors of Object.values(zonePack.relaciones)) {
-    assert.equal(neighbors.includes('caba'), false);
-  }
-
-  const zoneGraph = buildGraph(zonePack.relaciones);
-  const zoneRouteOptions = {
-    difficultyRules: zonePack.pack.routeRules.difficultyRules,
-    routeWeights: buildRouteWeights(zonePack.relaciones, zonePack.barrios)
-  };
-  const dailyRoutes = routesForDifficulty(zoneGraph, 'diaria', zoneRouteOptions);
-  assert.ok(dailyRoutes.length > 0, packId + ' has daily routes');
-  for (const route of dailyRoutes) {
-    const intermedios = route.length - 2;
-    assert.ok(intermedios >= 1 && intermedios <= 5, packId + ' daily route stays playable');
-  }
-
-  const zoneGameA = createGame(zonePack.relaciones, 'diaria', seededRandom(packId + ':daily'), {
-    routeRules: zonePack.pack.routeRules,
-    geojson: zonePack.barrios,
-    unitSingular: zonePack.pack.unitSingular,
-    mapLabel: zonePack.pack.label
-  });
-  const zoneGameB = createGame(zonePack.relaciones, 'diaria', seededRandom(packId + ':daily'), {
-    routeRules: zonePack.pack.routeRules,
-    geojson: zonePack.barrios,
-    unitSingular: zonePack.pack.unitSingular,
-    mapLabel: zonePack.pack.label
-  });
-  assert.deepEqual(zoneGameA.targetPath, zoneGameB.targetPath);
-  assert.equal(zoneGameA.targetPath.includes('caba'), false);
-}
+const gbaRoutes = routesForDifficulty(gbaGraph, 'diaria', gbaRouteOptions);
+assert.ok(gbaRoutes.length > 0);
+assert.ok(gbaRoutes.every((route) => route.length - 2 >= 3 && route.length - 2 <= 6));
+const gbaGameA = createGame(gbaPack.relaciones, 'diaria', seededRandom('gba:daily'), {
+  routeRules: gbaPack.pack.routeRules,
+  geojson: gbaPack.barrios,
+  unitSingular: gbaPack.pack.unitSingular,
+  mapLabel: gbaPack.pack.label
+});
+const gbaGameB = createGame(gbaPack.relaciones, 'diaria', seededRandom('gba:daily'), {
+  routeRules: gbaPack.pack.routeRules,
+  geojson: gbaPack.barrios,
+  unitSingular: gbaPack.pack.unitSingular,
+  mapLabel: gbaPack.pack.label
+});
+assert.deepEqual(gbaGameA.targetPath, gbaGameB.targetPath);
+assert.equal(gbaGameA.targetPath.includes('caba'), false);
+assert.equal(validateGuess(gbaGameA, 'CABA').type, 'invalid');
 
 console.log('game.test.mjs: ok');

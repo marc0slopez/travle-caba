@@ -2,7 +2,7 @@
 
 Juego argentino de rutas: conectá lugares vecinos hasta llegar de un punto a otro. El nombre viene de una forma muy nuestra de decir que estamos en camino: **yendo**.
 
-La versión estable actual incluye **YENDLE x CABA** y una arquitectura inicial de **packs de mapas** para seguir expandiendo sin romper CABA.
+La versión actual se concentra en dos experiencias sólidas: **YENDLE x CABA** y **YENDLE x GBA**.
 
 ## Estado actual
 
@@ -10,31 +10,16 @@ La versión estable actual incluye **YENDLE x CABA** y una arquitectura inicial 
 - Motor de juego genérico para distintos mapas.
 - Packs disponibles:
   - `caba-barrios`: barrios de la Ciudad de Buenos Aires.
-  - `amba-partidos`: CABA + partidos del AMBA como unidades de juego.
-  - `gba-norte-partidos`: partidos del Gran Buenos Aires Norte, sin CABA.
-  - `gba-oeste-partidos`: partidos del Gran Buenos Aires Oeste, sin CABA.
-  - `gba-sur-partidos`: partidos del Gran Buenos Aires Sur, sin CABA.
-- Modo diario con semilla por fecha y pack.
-- Rutas aleatorias por dificultad en CABA y AMBA.
-- Packs GBA Norte/Oeste/Sur en modo diario único, sin nueva ruta ni reintento.
-- Estadísticas locales, racha, ranking local y compartir resultado.
-- Tutorial inicial, pistas, silueta y sonido opcional.
+  - `gba-partidos`: 24 partidos del Gran Buenos Aires en sentido administrativo, sin CABA.
+- Solo modo diario: una ruta por fecha y por pack.
+- La diaria busca rutas de 3 a 6 unidades intermedias.
+- Al ganar o rendirse solo se puede compartir el resultado o volver al inicio.
+- Estadísticas locales, racha, ranking local, tutorial, pistas, silueta y sonido opcional.
 
 ## Versiones
 
 - **YENDLE x CABA**: barrios porteños.
-- **YENDLE x AMBA**: CABA y partidos del área metropolitana.
-- **YENDLE x GBA Norte**: partidos de zona norte por cordones, sin CABA.
-- **YENDLE x GBA Oeste**: partidos de zona oeste por cordones, sin CABA.
-- **YENDLE x GBA Sur**: partidos de zona sur por cordones, sin CABA.
-- Futuro posible: **YENDLE x Comunas**, **YENDLE diario por packs**.
-
-## Modos de juego
-
-- CABA y AMBA mantienen rutas aleatorias por dificultad: Turista, Vecino y Taxista.
-- GBA Norte, GBA Oeste y GBA Sur funcionan como juego diario: una sola ruta por fecha y pack.
-- En los packs GBA no se puede pedir nueva ruta ni reintentar la misma diaria.
-- La diaria busca rutas de 3 a 5 unidades intermedias cuando el grafo real de la zona lo permite; en zonas compactas usa la ruta más larga disponible para no inventar vecinos falsos.
+- **YENDLE x GBA**: partidos del Gran Buenos Aires sin CABA.
 
 ## Estructura
 
@@ -45,10 +30,7 @@ web/
   data/
     packs/
       caba-barrios/
-      amba-partidos/
-      gba-norte-partidos/
-      gba-oeste-partidos/
-      gba-sur-partidos/
+      gba-partidos/
   js/
     constants.js
     dataloader.js
@@ -74,11 +56,8 @@ Después abrí `http://localhost:4173`.
 ## URLs útiles
 
 - Home: `http://localhost:4173/index.html`
-- YENDLE x CABA: `http://localhost:4173/yendle.html?p=caba-barrios&d=facil`
-- YENDLE x AMBA: `http://localhost:4173/yendle.html?p=amba-partidos&d=facil`
-- YENDLE x GBA Norte: `http://localhost:4173/yendle.html?p=gba-norte-partidos&daily=1`
-- YENDLE x GBA Oeste: `http://localhost:4173/yendle.html?p=gba-oeste-partidos&daily=1`
-- YENDLE x GBA Sur: `http://localhost:4173/yendle.html?p=gba-sur-partidos&daily=1`
+- YENDLE x CABA: `http://localhost:4173/yendle.html?p=caba-barrios&daily=1`
+- YENDLE x GBA: `http://localhost:4173/yendle.html?p=gba-partidos&daily=1`
 
 ## Tests
 
@@ -89,6 +68,6 @@ node tests/game.test.mjs
 ## Datos
 
 - CABA barrios: GeoJSON local basado en datos abiertos de la Ciudad de Buenos Aires.
-- AMBA partidos: GeoJSON generado desde la descarga completa de Georef Argentina (`departamentos.geojson`), filtrando partidos de Buenos Aires, más CABA construida desde el mapa local.
+- GBA partidos: GeoJSON derivado de Georef Argentina, filtrando los 24 partidos del Gran Buenos Aires administrativo y excluyendo CABA.
 
-Las adyacencias de AMBA están explícitas en `web/data/packs/amba-partidos/relaciones.json` para poder auditarlas y corregirlas manualmente.
+Las adyacencias de GBA están explícitas en `web/data/packs/gba-partidos/relaciones.json` para poder auditarlas y corregirlas manualmente.

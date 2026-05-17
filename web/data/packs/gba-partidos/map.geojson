@@ -1,0 +1,1364 @@
+{
+  "type": "FeatureCollection",
+  "name": "gba-partidos",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "almirante_brown",
+        "name": "Almirante Brown",
+        "displayName": "Almirante Brown",
+        "sourceId": "06028",
+        "sourceName": "Almirante Brown",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.333957,
+              -34.758241
+            ],
+            [
+              -58.309779,
+              -34.793387
+            ],
+            [
+              -58.3328,
+              -34.805754
+            ],
+            [
+              -58.292471,
+              -34.854868
+            ],
+            [
+              -58.396445,
+              -34.909881
+            ],
+            [
+              -58.447753,
+              -34.825989
+            ],
+            [
+              -58.333957,
+              -34.758241
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "avellaneda",
+        "name": "Avellaneda",
+        "displayName": "Avellaneda",
+        "sourceId": "06035",
+        "sourceName": "Avellaneda",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.338381,
+              -34.633576
+            ],
+            [
+              -58.279639,
+              -34.678642
+            ],
+            [
+              -58.333505,
+              -34.726984
+            ],
+            [
+              -58.406505,
+              -34.663512
+            ],
+            [
+              -58.338381,
+              -34.633576
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "berazategui",
+        "name": "Berazategui",
+        "displayName": "Berazategui",
+        "sourceId": "06091",
+        "sourceName": "Berazategui",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.191008,
+              -34.738198
+            ],
+            [
+              -58.017688,
+              -34.780318
+            ],
+            [
+              -58.211085,
+              -34.951783
+            ],
+            [
+              -58.247414,
+              -34.923592
+            ],
+            [
+              -58.179871,
+              -34.866004
+            ],
+            [
+              -58.199915,
+              -34.813772
+            ],
+            [
+              -58.267461,
+              -34.773646
+            ],
+            [
+              -58.191008,
+              -34.738198
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "esteban_echeverria",
+        "name": "Esteban Echeverría",
+        "displayName": "Esteban Echeverría",
+        "sourceId": "06260",
+        "sourceName": "Esteban Echeverría",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.500797,
+              -34.722992
+            ],
+            [
+              -58.430528,
+              -34.817248
+            ],
+            [
+              -58.447753,
+              -34.825989
+            ],
+            [
+              -58.413042,
+              -34.873576
+            ],
+            [
+              -58.49186,
+              -34.927632
+            ],
+            [
+              -58.510333,
+              -34.901681
+            ],
+            [
+              -58.502852,
+              -34.854959
+            ],
+            [
+              -58.524502,
+              -34.779139
+            ],
+            [
+              -58.520507,
+              -34.741056
+            ],
+            [
+              -58.500797,
+              -34.722992
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ezeiza",
+        "name": "Ezeiza",
+        "displayName": "Ezeiza",
+        "sourceId": "06270",
+        "sourceName": "Ezeiza",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.520507,
+              -34.741056
+            ],
+            [
+              -58.524458,
+              -34.779966
+            ],
+            [
+              -58.502852,
+              -34.854959
+            ],
+            [
+              -58.510333,
+              -34.901681
+            ],
+            [
+              -58.490155,
+              -34.928838
+            ],
+            [
+              -58.55317,
+              -34.976277
+            ],
+            [
+              -58.556271,
+              -35.007048
+            ],
+            [
+              -58.620151,
+              -34.960741
+            ],
+            [
+              -58.599054,
+              -34.942952
+            ],
+            [
+              -58.650331,
+              -34.891087
+            ],
+            [
+              -58.615506,
+              -34.818527
+            ],
+            [
+              -58.568155,
+              -34.758829
+            ],
+            [
+              -58.537507,
+              -34.756953
+            ],
+            [
+              -58.520507,
+              -34.741056
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "florencio_varela",
+        "name": "Florencio Varela",
+        "displayName": "Florencio Varela",
+        "sourceId": "06274",
+        "sourceName": "Florencio Varela",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.267461,
+              -34.773646
+            ],
+            [
+              -58.199915,
+              -34.813772
+            ],
+            [
+              -58.179871,
+              -34.866004
+            ],
+            [
+              -58.247414,
+              -34.923592
+            ],
+            [
+              -58.211085,
+              -34.951783
+            ],
+            [
+              -58.277172,
+              -35.009418
+            ],
+            [
+              -58.300786,
+              -34.971682
+            ],
+            [
+              -58.288205,
+              -34.965044
+            ],
+            [
+              -58.316317,
+              -34.926331
+            ],
+            [
+              -58.274607,
+              -34.91706
+            ],
+            [
+              -58.317148,
+              -34.868154
+            ],
+            [
+              -58.292471,
+              -34.854868
+            ],
+            [
+              -58.332806,
+              -34.805737
+            ],
+            [
+              -58.309779,
+              -34.793387
+            ],
+            [
+              -58.304114,
+              -34.801165
+            ],
+            [
+              -58.298454,
+              -34.783439
+            ],
+            [
+              -58.267461,
+              -34.773646
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "hurlingham",
+        "name": "Hurlingham",
+        "displayName": "Hurlingham",
+        "sourceId": "06408",
+        "sourceName": "Hurlingham",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.642231,
+              -34.566309
+            ],
+            [
+              -58.616028,
+              -34.588705
+            ],
+            [
+              -58.621808,
+              -34.633151
+            ],
+            [
+              -58.653486,
+              -34.631612
+            ],
+            [
+              -58.693934,
+              -34.593742
+            ],
+            [
+              -58.642231,
+              -34.566309
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ituzaingo",
+        "name": "Ituzaingó",
+        "displayName": "Ituzaingó",
+        "sourceId": "06410",
+        "sourceName": "Ituzaingó",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.682222,
+              -34.603234
+            ],
+            [
+              -58.653486,
+              -34.631612
+            ],
+            [
+              -58.667381,
+              -34.685988
+            ],
+            [
+              -58.729025,
+              -34.634784
+            ],
+            [
+              -58.709898,
+              -34.60151
+            ],
+            [
+              -58.693934,
+              -34.593742
+            ],
+            [
+              -58.682222,
+              -34.603234
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "jose_c_paz",
+        "name": "José C. Paz",
+        "displayName": "José C. Paz",
+        "sourceId": "06412",
+        "sourceName": "José C. Paz",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.78948,
+              -34.473851
+            ],
+            [
+              -58.720899,
+              -34.518234
+            ],
+            [
+              -58.776028,
+              -34.557058
+            ],
+            [
+              -58.823584,
+              -34.508215
+            ],
+            [
+              -58.811153,
+              -34.485744
+            ],
+            [
+              -58.821687,
+              -34.451956
+            ],
+            [
+              -58.78948,
+              -34.473851
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "la_matanza",
+        "name": "La Matanza",
+        "displayName": "La Matanza",
+        "sourceId": "06427",
+        "sourceName": "La Matanza",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.552207,
+              -34.637594
+            ],
+            [
+              -58.461655,
+              -34.705135
+            ],
+            [
+              -58.483902,
+              -34.732136
+            ],
+            [
+              -58.504473,
+              -34.721278
+            ],
+            [
+              -58.537507,
+              -34.756953
+            ],
+            [
+              -58.566983,
+              -34.757761
+            ],
+            [
+              -58.615506,
+              -34.818527
+            ],
+            [
+              -58.646857,
+              -34.889685
+            ],
+            [
+              -58.694106,
+              -34.912195
+            ],
+            [
+              -58.762494,
+              -34.858422
+            ],
+            [
+              -58.749862,
+              -34.847367
+            ],
+            [
+              -58.773244,
+              -34.827613
+            ],
+            [
+              -58.707051,
+              -34.811268
+            ],
+            [
+              -58.750247,
+              -34.777588
+            ],
+            [
+              -58.728396,
+              -34.759307
+            ],
+            [
+              -58.703884,
+              -34.778711
+            ],
+            [
+              -58.681935,
+              -34.7595
+            ],
+            [
+              -58.67361,
+              -34.766327
+            ],
+            [
+              -58.657915,
+              -34.753297
+            ],
+            [
+              -58.675462,
+              -34.739295
+            ],
+            [
+              -58.636154,
+              -34.715029
+            ],
+            [
+              -58.639379,
+              -34.700621
+            ],
+            [
+              -58.581876,
+              -34.64317
+            ],
+            [
+              -58.552207,
+              -34.637594
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "lanus",
+        "name": "Lanús",
+        "displayName": "Lanús",
+        "sourceId": "06434",
+        "sourceName": "Lanús",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.408451,
+              -34.660135
+            ],
+            [
+              -58.333505,
+              -34.726984
+            ],
+            [
+              -58.347314,
+              -34.73984
+            ],
+            [
+              -58.413453,
+              -34.732627
+            ],
+            [
+              -58.446915,
+              -34.688777
+            ],
+            [
+              -58.408451,
+              -34.660135
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "lomas_de_zamora",
+        "name": "Lomas de Zamora",
+        "displayName": "Lomas de Zamora",
+        "sourceId": "06490",
+        "sourceName": "Lomas de Zamora",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.434443,
+              -34.705195
+            ],
+            [
+              -58.413269,
+              -34.732865
+            ],
+            [
+              -58.346962,
+              -34.739344
+            ],
+            [
+              -58.336639,
+              -34.754401
+            ],
+            [
+              -58.430528,
+              -34.817248
+            ],
+            [
+              -58.500797,
+              -34.722992
+            ],
+            [
+              -58.483902,
+              -34.732136
+            ],
+            [
+              -58.446915,
+              -34.688777
+            ],
+            [
+              -58.434443,
+              -34.705195
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "malvinas_argentinas",
+        "name": "Malvinas Argentinas",
+        "displayName": "Malvinas Argentinas",
+        "sourceId": "06515",
+        "sourceName": "Malvinas Argentinas",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.684803,
+              -34.466151
+            ],
+            [
+              -58.646591,
+              -34.501384
+            ],
+            [
+              -58.701269,
+              -34.532748
+            ],
+            [
+              -58.784541,
+              -34.476066
+            ],
+            [
+              -58.705563,
+              -34.439311
+            ],
+            [
+              -58.684803,
+              -34.466151
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "merlo",
+        "name": "Merlo",
+        "displayName": "Merlo",
+        "sourceId": "06539",
+        "sourceName": "Merlo",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.698293,
+              -34.660258
+            ],
+            [
+              -58.636154,
+              -34.715029
+            ],
+            [
+              -58.675462,
+              -34.739295
+            ],
+            [
+              -58.657915,
+              -34.753297
+            ],
+            [
+              -58.703884,
+              -34.778711
+            ],
+            [
+              -58.728396,
+              -34.759307
+            ],
+            [
+              -58.750247,
+              -34.777588
+            ],
+            [
+              -58.864295,
+              -34.698422
+            ],
+            [
+              -58.860294,
+              -34.685206
+            ],
+            [
+              -58.818311,
+              -34.685589
+            ],
+            [
+              -58.757549,
+              -34.660482
+            ],
+            [
+              -58.729025,
+              -34.634784
+            ],
+            [
+              -58.698293,
+              -34.660258
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "moreno",
+        "name": "Moreno",
+        "displayName": "Moreno",
+        "sourceId": "06560",
+        "sourceName": "Moreno",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.811087,
+              -34.521046
+            ],
+            [
+              -58.713374,
+              -34.605638
+            ],
+            [
+              -58.731742,
+              -34.642561
+            ],
+            [
+              -58.757549,
+              -34.660482
+            ],
+            [
+              -58.818311,
+              -34.685589
+            ],
+            [
+              -58.860294,
+              -34.685206
+            ],
+            [
+              -58.884468,
+              -34.668796
+            ],
+            [
+              -58.884309,
+              -34.627195
+            ],
+            [
+              -58.864113,
+              -34.616882
+            ],
+            [
+              -58.890951,
+              -34.579812
+            ],
+            [
+              -58.847501,
+              -34.549171
+            ],
+            [
+              -58.823771,
+              -34.508367
+            ],
+            [
+              -58.811087,
+              -34.521046
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "moron",
+        "name": "Morón",
+        "displayName": "Morón",
+        "sourceId": "06568",
+        "sourceName": "Morón",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.616028,
+              -34.588705
+            ],
+            [
+              -58.556107,
+              -34.634703
+            ],
+            [
+              -58.581876,
+              -34.64317
+            ],
+            [
+              -58.640974,
+              -34.704543
+            ],
+            [
+              -58.667381,
+              -34.685988
+            ],
+            [
+              -58.653486,
+              -34.631612
+            ],
+            [
+              -58.620379,
+              -34.631419
+            ],
+            [
+              -58.616028,
+              -34.588705
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "quilmes",
+        "name": "Quilmes",
+        "displayName": "Quilmes",
+        "sourceId": "06658",
+        "sourceName": "Quilmes",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.26292,
+              -34.687572
+            ],
+            [
+              -58.194645,
+              -34.735695
+            ],
+            [
+              -58.298454,
+              -34.783439
+            ],
+            [
+              -58.304114,
+              -34.801165
+            ],
+            [
+              -58.346962,
+              -34.739344
+            ],
+            [
+              -58.279639,
+              -34.678642
+            ],
+            [
+              -58.26292,
+              -34.687572
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "san_fernando",
+        "name": "San Fernando",
+        "displayName": "San Fernando",
+        "sourceId": "06749",
+        "sourceName": "San Fernando - sector continental",
+        "deltaIslandsRemoved": true,
+        "note": "Se omiten islas del Delta para el mapa jugable AMBA.",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.54505,
+              -34.430729
+            ],
+            [
+              -58.516165,
+              -34.443321
+            ],
+            [
+              -58.600303,
+              -34.490354
+            ],
+            [
+              -58.595171,
+              -34.448343
+            ],
+            [
+              -58.557947,
+              -34.424092
+            ],
+            [
+              -58.54505,
+              -34.430729
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "san_isidro",
+        "name": "San Isidro",
+        "displayName": "San Isidro",
+        "sourceId": "06756",
+        "sourceName": "San Isidro",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.514155,
+              -34.443526
+            ],
+            [
+              -58.4794,
+              -34.489761
+            ],
+            [
+              -58.553764,
+              -34.530205
+            ],
+            [
+              -58.600303,
+              -34.490354
+            ],
+            [
+              -58.514155,
+              -34.443526
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "san_martin",
+        "name": "San Martín",
+        "displayName": "San Martín",
+        "sourceId": "06371",
+        "sourceName": "General San Martín",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.553764,
+              -34.530205
+            ],
+            [
+              -58.537781,
+              -34.544164
+            ],
+            [
+              -58.529811,
+              -34.537332
+            ],
+            [
+              -58.50996,
+              -34.569205
+            ],
+            [
+              -58.522972,
+              -34.597563
+            ],
+            [
+              -58.562314,
+              -34.591405
+            ],
+            [
+              -58.619241,
+              -34.54673
+            ],
+            [
+              -58.601517,
+              -34.521241
+            ],
+            [
+              -58.600303,
+              -34.490354
+            ],
+            [
+              -58.553764,
+              -34.530205
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "san_miguel",
+        "name": "San Miguel",
+        "displayName": "San Miguel",
+        "sourceId": "06760",
+        "sourceName": "San Miguel",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.612095,
+              -34.52986
+            ],
+            [
+              -58.617681,
+              -34.546904
+            ],
+            [
+              -58.713374,
+              -34.605638
+            ],
+            [
+              -58.77694,
+              -34.557917
+            ],
+            [
+              -58.720899,
+              -34.518234
+            ],
+            [
+              -58.689134,
+              -34.530159
+            ],
+            [
+              -58.646591,
+              -34.501384
+            ],
+            [
+              -58.612095,
+              -34.52986
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tigre",
+        "name": "Tigre",
+        "displayName": "Tigre",
+        "sourceId": "06805",
+        "sourceName": "Tigre",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.472022,
+              -34.32351
+            ],
+            [
+              -58.436937,
+              -34.300883
+            ],
+            [
+              -58.44139,
+              -34.386659
+            ],
+            [
+              -58.489199,
+              -34.44407
+            ],
+            [
+              -58.523514,
+              -34.443781
+            ],
+            [
+              -58.557947,
+              -34.424092
+            ],
+            [
+              -58.595171,
+              -34.448343
+            ],
+            [
+              -58.606343,
+              -34.534542
+            ],
+            [
+              -58.67821,
+              -34.474651
+            ],
+            [
+              -58.734634,
+              -34.40246
+            ],
+            [
+              -58.705329,
+              -34.372973
+            ],
+            [
+              -58.720619,
+              -34.36329
+            ],
+            [
+              -58.679814,
+              -34.345687
+            ],
+            [
+              -58.649515,
+              -34.266598
+            ],
+            [
+              -58.472022,
+              -34.32351
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tres_de_febrero",
+        "name": "Tres de Febrero",
+        "displayName": "Tres de Febrero",
+        "sourceId": "06840",
+        "sourceName": "Tres de Febrero",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.619897,
+              -34.546574
+            ],
+            [
+              -58.562314,
+              -34.591405
+            ],
+            [
+              -58.522972,
+              -34.597563
+            ],
+            [
+              -58.529211,
+              -34.65464
+            ],
+            [
+              -58.646336,
+              -34.562968
+            ],
+            [
+              -58.619897,
+              -34.546574
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "vicente_lopez",
+        "name": "Vicente López",
+        "displayName": "Vicente López",
+        "sourceId": "06861",
+        "sourceName": "Vicente López",
+        "belongsTo": "Gran Buenos Aires",
+        "cabaExcluded": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -58.479285,
+              -34.494397
+            ],
+            [
+              -58.459564,
+              -34.527784
+            ],
+            [
+              -58.500804,
+              -34.549533
+            ],
+            [
+              -58.50996,
+              -34.569205
+            ],
+            [
+              -58.529811,
+              -34.537332
+            ],
+            [
+              -58.537781,
+              -34.544164
+            ],
+            [
+              -58.553764,
+              -34.530205
+            ],
+            [
+              -58.479285,
+              -34.494397
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -4,7 +4,7 @@ async function fetchJson(path) {
   if (typeof window === 'undefined') {
     const { readFile } = await import('node:fs/promises');
     const fileUrl = new URL('../' + path, import.meta.url);
-    return JSON.parse(await readFile(fileUrl, 'utf8'));
+    return JSON.parse((await readFile(fileUrl, 'utf8')).replace(/^\uFEFF/, ''));
   }
 
   const response = await fetch(path);
